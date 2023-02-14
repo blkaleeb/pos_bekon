@@ -4,7 +4,11 @@ function format_uang ($angka) {
     return number_format($angka, 0, ',', '.');
 }
 function format_qty ($angka) {
-    return number_format($angka, 3, ',', '.');
+    if(is_numeric( $angka ) && floor( $angka ) != $angka) {
+        return number_format($angka, 3, ',', '.');
+    }
+
+    return $angka;
 }
 
 function terbilang ($angka) {

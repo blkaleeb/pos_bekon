@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Member;
 use App\Models\Penjualan;
 use App\Models\PenjualanDetail;
 use App\Models\Produk;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use PDF;
+
+use function PHPUnit\Framework\isNull;
 
 class PenjualanController extends Controller
 {
@@ -24,7 +27,7 @@ class PenjualanController extends Controller
             ->of($penjualan)
             ->addIndexColumn()
             ->addColumn('total_item', function ($penjualan) {
-                return format_uang($penjualan->total_item);
+                return format_qty($penjualan->total_item);
             })
             ->addColumn('total_harga', function ($penjualan) {
                 return 'Rp. '. format_uang($penjualan->total_harga);
@@ -75,14 +78,32 @@ class PenjualanController extends Controller
 
     public function store(Request $request)
     {
+        $newmember = 0;
+        if($request->id_member == null) {
+            $member = Member::latest()->first() ?? new Member();
+            $kode_member = (int) $member->kode_member +1;
+
+            $member = new Member();
+            $member->kode_member = tambah_nol_didepan($kode_member, 5);
+            $member->nama = $request->kode_member;
+            $member->telepon = "";
+            $member->alamat = "";
+            $member->save();
+            $newmember = $member->id_member;
+        }
+
+        $memberid = isNull($request->id_member) ? $newmember : $request->id_member;
+
         $penjualan = Penjualan::findOrFail($request->id_penjualan);
-        $penjualan->id_member = $request->id_member;
+        $penjualan->id_member = $memberid;
         $penjualan->total_item = $request->total_item;
         $penjualan->total_harga = $request->total;
         $penjualan->diskon = $request->diskon;
         $penjualan->bayar = $request->bayar;
         $penjualan->diterima = $request->diterima;
         $penjualan->update();
+
+        // dd($request);
 
         $detail = PenjualanDetail::where('id_penjualan', $penjualan->id_penjualan)->get();
         foreach ($detail as $item) {
