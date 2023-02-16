@@ -78,8 +78,8 @@ class PenjualanController extends Controller
 
     public function store(Request $request)
     {
-        $newmember = 0;
-        if($request->id_member == null) {
+        $newmember = null;
+        if($request->id_member == null && $request->kode_member != null) {
             $member = Member::latest()->first() ?? new Member();
             $kode_member = (int) $member->kode_member +1;
 
@@ -92,7 +92,7 @@ class PenjualanController extends Controller
             $newmember = $member->id_member;
         }
 
-        $memberid = isNull($request->id_member) ? $newmember : $request->id_member;
+        $memberid = !$request->id_member ? $newmember : $request->id_member;
 
         $penjualan = Penjualan::findOrFail($request->id_penjualan);
         $penjualan->id_member = $memberid;
