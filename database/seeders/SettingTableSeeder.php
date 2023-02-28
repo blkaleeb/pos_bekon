@@ -20,7 +20,7 @@ class SettingTableSeeder extends Seeder
             'alamat' => 'Jl. Taman holis indah Blok F1-4',
             'telepon' => '081321377775',
             'tipe_nota' => 1, // kecil
-            'diskon' => 5,
+            'diskon' => 0,
             'path_logo' => '/img/logo.png',
             'path_kartu_member' => '/img/member.png',
         ]);
