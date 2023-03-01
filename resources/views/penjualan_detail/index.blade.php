@@ -147,7 +147,7 @@
 
 @push('scripts')
 <script>
-    let table, table2;
+    let table, table2, table3;
 
     $(function () {
         $('body').addClass('sidebar-collapse');
@@ -180,7 +180,9 @@
                 $('#diterima').trigger('input');
             }, 300);
         });
+
         table2 = $('.table-produk').DataTable();
+        table3 = $('.table-member').DataTable();
 
         $(document).on('input', '.quantity', function () {
             let id = $(this).data('id');
