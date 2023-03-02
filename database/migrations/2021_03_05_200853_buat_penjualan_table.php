@@ -16,7 +16,7 @@ class BuatPenjualanTable extends Migration
         Schema::create('penjualan', function (Blueprint $table) {
             $table->increments('id_penjualan');
             $table->integer('id_member');
-            $table->float('total_item');
+            $table->float('total_item',8,3);
             $table->integer('total_harga');
             $table->tinyInteger('diskon')->default(0);
             $table->integer('bayar')->default(0);

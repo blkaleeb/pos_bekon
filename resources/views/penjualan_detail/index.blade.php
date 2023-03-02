@@ -187,13 +187,6 @@
         $(document).on('input', '.quantity', function () {
             let id = $(this).data('id');
             let jumlah = parseFloat($(this).val());
-            let harga_jual = $('.harga_jual').val();
-
-            let hargastr = harga_jual.toString();
-            let newstr = hargastr.replace('.', '');
-            harga_jual = parseInt(newstr);
-
-            console.log(harga_jual);
 
             // if (jumlah <= 0) {
             //     $(this).val(1);
@@ -211,7 +204,6 @@
                     '_token': $('[name=csrf-token]').attr('content'),
                     '_method': 'put',
                     'jumlah': jumlah,
-                    'harga_jual': harga_jual
                 })
                 .done(response => {
                     $(this).on('mouseout', function () {
@@ -225,7 +217,7 @@
         });
         $(document).on('input', '.harga_jual', function () {
             let id = $(this).data('id');
-            let jumlah = parseFloat($('.quantity').val());
+            let jumlah = "";
             let harga_jual = $(this).val();
 
             let hargastr = harga_jual.toString();

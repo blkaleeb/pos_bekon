@@ -99,10 +99,16 @@ class PenjualanDetailController extends Controller
     public function update(Request $request, $id)
     {
         $detail = PenjualanDetail::find($id);
-        $detail->jumlah = $request->jumlah;
-        $detail->harga_jual = $request->harga_jual;
-        $detail->subtotal = $detail->harga_jual * $detail->jumlah - (($detail->diskon * $detail->jumlah) / 100 * $detail->harga_jual);;
-        $detail->update();
+        if($request->jumlah){
+            $detail->jumlah = $request->jumlah;
+            $detail->subtotal = $detail->harga_jual * $detail->jumlah - (($detail->diskon * $detail->jumlah) / 100 * $detail->harga_jual);
+            $detail->update();
+        }
+        else if ($request->harga_jual) {
+            $detail->harga_jual = $request->harga_jual;
+            $detail->subtotal = $detail->harga_jual * $detail->jumlah - (($detail->diskon * $detail->jumlah) / 100 * $detail->harga_jual);
+            $detail->update();
+        }
     }
 
     public function destroy($id)

@@ -18,7 +18,7 @@ class BuatPembelianDetailTable extends Migration
             $table->integer('id_pembelian');
             $table->integer('id_produk');
             $table->integer('harga_beli');
-            $table->float('jumlah');
+            $table->float('jumlah',8,3);
             $table->integer('subtotal');
             $table->timestamps();
         });

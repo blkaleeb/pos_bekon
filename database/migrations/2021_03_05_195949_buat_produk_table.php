@@ -21,7 +21,7 @@ class BuatProdukTable extends Migration
             $table->integer('harga_beli');
             $table->tinyInteger('diskon')->default(0);
             $table->integer('harga_jual');
-            $table->decimal('stok','20','3');
+            $table->float('stok', 8, 3);
             $table->timestamps();
         });
     }
