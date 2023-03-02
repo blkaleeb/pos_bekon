@@ -4,12 +4,17 @@ function format_uang ($angka) {
     return number_format($angka, 0, ',', '.');
 }
 function format_qty ($angka) {
-    if(is_numeric( $angka ) && floor( $angka ) != $angka) {
-        return number_format($angka, 3, ',', '.');
+    if(is_numeric($angka)) {
+        if (floor($angka) != $angka) {
+            return number_format($angka, 3, ',', '.');
+        } else {
+            return number_format($angka, 0, ',', '.');
+        }
     }
 
     return $angka;
 }
+
 
 function terbilang ($angka) {
     $angka = abs($angka);
