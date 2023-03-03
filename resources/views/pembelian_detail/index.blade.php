@@ -57,7 +57,7 @@
                 </table>
             </div>
             <div class="box-body">
-                    
+
                 <form class="form-produk">
                     @csrf
                     <div class="form-group row">
@@ -168,13 +168,14 @@
 
         $(document).on('input', '.quantity', function () {
             let id = $(this).data('id');
-            let jumlah = parseInt($(this).val());
+            let jumlah = parseFloat($(this).val());
 
-            if (jumlah < 1) {
-                $(this).val(1);
-                alert('Jumlah tidak boleh kurang dari 1');
-                return;
-            }
+            // if (jumlah < 1) {
+            //     $(this).val(1);
+            //     alert('Jumlah tidak boleh kurang dari 1');
+            //     return;
+            // }
+
             if (jumlah > 10000) {
                 $(this).val(10000);
                 alert('Jumlah tidak boleh lebih dari 10000');
@@ -185,6 +186,35 @@
                     '_token': $('[name=csrf-token]').attr('content'),
                     '_method': 'put',
                     'jumlah': jumlah
+                })
+                .done(response => {
+                    $(this).on('mouseout', function () {
+                        table.ajax.reload(() => loadForm($('#diskon').val()));
+                    });
+                })
+                .fail(errors => {
+                    alert('Tidak dapat menyimpan data');
+                    return;
+                });
+        });
+
+        $(document).on('input', '.harga_beli', function () {
+            let id = $(this).data('id');
+            let jumlah = "";
+            let harga_beli = $(this).val();
+
+            let hargastr = harga_beli.toString();
+            let newstr = hargastr.replace('.', '');
+            harga_beli = parseInt(newstr);
+
+            console.log("harga beli: " + harga_beli);
+            console.log('jumlah: ' + jumlah);
+
+            $.post(`{{ url('/pembelian_detail') }}/${id}`, {
+                    '_token': $('[name=csrf-token]').attr('content'),
+                    '_method': 'put',
+                    'jumlah': jumlah,
+                    'harga_beli': harga_beli
                 })
                 .done(response => {
                     $(this).on('mouseout', function () {

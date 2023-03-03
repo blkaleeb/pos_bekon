@@ -37,7 +37,7 @@ class PembelianDetailController extends Controller
             $row = array();
             $row['kode_produk'] = '<span class="label label-success">'. $item->produk['kode_produk'] .'</span';
             $row['nama_produk'] = $item->produk['nama_produk'];
-            $row['harga_beli']  = 'Rp. '. format_uang($item->harga_beli);
+            $row['harga_beli']  = '<input type="number" class="form-control input-sm harga_beli" data-id="'. $item->id_pembelian_detail .'" value="'. format_uang($item->harga_beli) .'">';
             $row['jumlah']      = '<input type="number" class="form-control input-sm quantity" data-id="'. $item->id_pembelian_detail .'" value="'. $item->jumlah .'">';
             $row['subtotal']    = 'Rp. '. format_uang($item->subtotal);
             $row['aksi']        = '<div class="btn-group">
@@ -62,13 +62,14 @@ class PembelianDetailController extends Controller
         return datatables()
             ->of($data)
             ->addIndexColumn()
-            ->rawColumns(['aksi', 'kode_produk', 'jumlah'])
+            ->rawColumns(['aksi', 'kode_produk', 'jumlah','harga_beli'])
             ->make(true);
     }
 
     public function store(Request $request)
     {
         $produk = Produk::where('id_produk', $request->id_produk)->first();
+
         if (! $produk) {
             return response()->json('Data gagal disimpan', 400);
         }
@@ -87,9 +88,16 @@ class PembelianDetailController extends Controller
     public function update(Request $request, $id)
     {
         $detail = PembelianDetail::find($id);
-        $detail->jumlah = $request->jumlah;
-        $detail->subtotal = $detail->harga_beli * $request->jumlah;
-        $detail->update();
+        if ($request->jumlah) {
+            $detail->jumlah = $request->jumlah;
+            $detail->subtotal = $detail->harga_beli * $request->jumlah;
+            $detail->update();
+        }
+        else if ($request->harga_beli) {
+            $detail->harga_beli = $request->harga_beli;
+            $detail->subtotal = $detail->harga_beli * $detail->jumlah;
+            $detail->update();
+        }
     }
 
     public function destroy($id)
