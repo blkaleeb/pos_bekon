@@ -14,7 +14,26 @@ class KategoriPengeluaranController extends Controller
      */
     public function index()
     {
-        //
+        return view('kategori_pengeluaran.index');
+    }
+
+    public function data()
+    {
+        $kategori = KategoriPengeluaran::orderBy('id', 'desc')->get();
+
+        return datatables()
+            ->of($kategori)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($kategori) {
+                return '
+                <div class="btn-group">
+                    <button onclick="editForm(`'. route('kategori.update', $kategori->id) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button onclick="deleteData(`'. route('kategori.destroy', $kategori->id) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                </div>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 
     /**
@@ -35,7 +54,12 @@ class KategoriPengeluaranController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $kategori = new KategoriPengeluaran();
+        $kategori->nama_kategori = $request->nama_kategori;
+        $kategori->jenis = $request->jenis;
+        $kategori->save();
+
+        return response()->json('Data berhasil disimpan', 200);
     }
 
     /**
