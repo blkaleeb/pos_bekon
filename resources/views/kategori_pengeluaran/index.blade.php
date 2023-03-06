@@ -21,6 +21,7 @@
                     <thead>
                         <th width="5%">No</th>
                         <th>Kategori</th>
+                        <th>Jenis</th>
                         <th width="15%"><i class="fa fa-cog"></i></th>
                     </thead>
                 </table>
@@ -48,6 +49,7 @@
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'nama_kategori'},
+                {data: 'jenis'},
                 {data: 'aksi', searchable: false, sortable: false},
             ]
         });
@@ -89,6 +91,8 @@
         $.get(url)
             .done((response) => {
                 $('#modal-form [name=nama_kategori]').val(response.nama_kategori);
+                test = $('#jenis').find('option[value="' + response.jenis + '"]').prop('selected', true);
+                // console.log(test);
             })
             .fail((errors) => {
                 alert('Tidak dapat menampilkan data');

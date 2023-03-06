@@ -20,10 +20,12 @@
                     </div>
                     <div class="form-group">
                         <label for="jenis" class="col-lg-2 col-lg-offset-1 control-label">Select</label>
-                        <div class="col-lg-6"><select class="form-control" name="jenis" id="jenis">
-                            <option value="credit">Credit</option>
-                            <option value="debit">Debit</option>
-                        </select></div>
+                        <div class="col-lg-6">
+                            <select class="form-control" name="jenis" id="jenis">
+                                <option value="credit">Credit</option>
+                                <option value="debit">Debit</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
