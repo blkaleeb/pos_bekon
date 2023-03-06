@@ -2,19 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KategoriPengeluaran;
 use Illuminate\Http\Request;
 use App\Models\Pengeluaran;
+use App\Models\Wallet;
 
 class PengeluaranController extends Controller
 {
     public function index()
     {
-        return view('pengeluaran.index');
+        $this->data['kategori'] = KategoriPengeluaran::all();
+
+        $this->data['wallet'] = Wallet::latest()->first();
+
+        return view('pengeluaran.index', $this->data);
     }
 
     public function data()
     {
-        $pengeluaran = Pengeluaran::orderBy('id_pengeluaran', 'desc')->get();
+        // $pengeluaran = Pengeluaran::orderBy('id_pengeluaran', 'desc')->get();
+
+        $pengeluaran = Pengeluaran::leftJoin('kategori_pengeluarans', 'kategori_pengeluarans.id', 'pengeluaran.id_kategori')
+            ->select('pengeluaran.*', 'nama_kategori')
+            ->get();
 
         return datatables()
             ->of($pengeluaran)
@@ -55,7 +65,31 @@ class PengeluaranController extends Controller
      */
     public function store(Request $request)
     {
-        $pengeluaran = Pengeluaran::create($request->all());
+        $pengeluaran = new Pengeluaran();
+        $pengeluaran->id_kategori = $request->id_kategori;
+        $pengeluaran->deskripsi = $request->deskripsi;
+        $pengeluaran->nominal = $request->nominal;
+        $pengeluaran->save();
+
+        $kategoripengeluaran = KategoriPengeluaran::find($request->id_kategori);
+        $jenispengeluaran = $kategoripengeluaran->jenis;
+
+        $wallets = new Wallet();
+        $pengeluaranBaru = Pengeluaran::latest()->first();
+
+        if($jenispengeluaran == 'credit') {
+            $wallets->debit = 0;
+            $wallets->credit = $request->nominal;
+            $wallets->id_pengeluaran = $pengeluaranBaru->id_pengeluaran;
+            $wallets->saldo = $request->saldo + $wallets->credit - $wallets->debit;
+            $wallets->save();
+        } else if ($jenispengeluaran == 'debit') {
+            $wallets->credit = 0;
+            $wallets->debit = $request->nominal;
+            $wallets->id_pengeluaran = $pengeluaranBaru->id_pengeluaran;
+            $wallets->saldo = $request->saldo + $wallets->credit - $wallets->debit;
+            $wallets->save();
+        }
 
         return response()->json('Data berhasil disimpan', 200);
     }

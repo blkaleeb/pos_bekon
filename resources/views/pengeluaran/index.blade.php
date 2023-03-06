@@ -20,8 +20,9 @@
                 <table class="table table-stiped table-bordered">
                     <thead>
                         <th width="5%">No</th>
-                        <th>Tanggal</th>
+                        <th width="10%">Tanggal</th>
                         <th>Deskripsi</th>
+                        <th>Kategori</th>
                         <th>Nominal</th>
                         <th width="15%"><i class="fa fa-cog"></i></th>
                     </thead>
@@ -50,6 +51,7 @@
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'created_at'},
+                {data: 'nama_kategori'},
                 {data: 'deskripsi'},
                 {data: 'nominal'},
                 {data: 'aksi', searchable: false, sortable: false},

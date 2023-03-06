@@ -4,6 +4,7 @@
             @csrf
             @method('post')
 
+            <input type="text" name="saldo" id="saldo" value="{{ $wallet->saldo }}" hidden>
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -11,6 +12,16 @@
                     <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label for="id_kategori" class="col-lg-2 col-lg-offset-1 control-label">Select</label>
+                        <div class="col-lg-6">
+                            <select class="form-control" name="id_kategori" id="id_kategori">\
+                                @foreach ($kategori as $key => $item)
+                                    <option value="{{ $item->id }}">{{ $item->nama_kategori }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label for="deskripsi" class="col-lg-2 col-lg-offset-1 control-label">Deskripsi</label>
                         <div class="col-lg-6">
