@@ -12,7 +12,6 @@ class PengeluaranController extends Controller
     public function index()
     {
         $this->data['kategori'] = KategoriPengeluaran::all();
-
         $this->data['wallet'] = Wallet::latest()->first();
 
         return view('pengeluaran.index', $this->data);
@@ -24,6 +23,7 @@ class PengeluaranController extends Controller
 
         $pengeluaran = Pengeluaran::leftJoin('kategori_pengeluarans', 'kategori_pengeluarans.id', 'pengeluaran.id_kategori')
             ->select('pengeluaran.*', 'nama_kategori')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return datatables()
@@ -91,7 +91,10 @@ class PengeluaranController extends Controller
             $wallets->save();
         }
 
-        return response()->json('Data berhasil disimpan', 200);
+        // return response()->json(['success' => true,
+        //                     'data' => $wallets->saldo]);
+
+        return redirect()->route('pengeluaran.index')->with('wallet',$wallets);
     }
 
     /**
@@ -127,7 +130,10 @@ class PengeluaranController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $pengeluaran = Pengeluaran::find($id)->update($request->all());
+        $pengeluaran = Pengeluaran::find($id);
+        $pengeluaran->nominal = $request->nominal;
+
+        $wallet = Wallet::find($request->id_wallet);
 
         return response()->json('Data berhasil disimpan', 200);
     }

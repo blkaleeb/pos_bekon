@@ -12,6 +12,12 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
+        <h3>Saldo Kas:</h3>
+        <label id="saldoKas">{{ format_uang($wallet->saldo) }}</label>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
         <div class="box">
             <div class="box-header with-border">
                 <button onclick="addForm('{{ route('pengeluaran.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
@@ -63,7 +69,8 @@
                 $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
                     .done((response) => {
                         $('#modal-form').modal('hide');
-                        table.ajax.reload();
+                        location.reload();
+                        alert('Berhasil menambahkan transaksi');
                     })
                     .fail((errors) => {
                         alert('Tidak dapat menyimpan data');
@@ -96,6 +103,7 @@
             .done((response) => {
                 $('#modal-form [name=deskripsi]').val(response.deskripsi);
                 $('#modal-form [name=nominal]').val(response.nominal);
+                $('#id_kategori').find('option[value="' + response.id_kategori + '"]').prop('selected', true);
             })
             .fail((errors) => {
                 alert('Tidak dapat menampilkan data');

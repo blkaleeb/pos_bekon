@@ -91,7 +91,7 @@
         $.get(url)
             .done((response) => {
                 $('#modal-form [name=nama_kategori]').val(response.nama_kategori);
-                test = $('#jenis').find('option[value="' + response.jenis + '"]').prop('selected', true);
+                $('#jenis').find('option[value="' + response.jenis + '"]').prop('selected', true);
                 // console.log(test);
             })
             .fail((errors) => {
