@@ -185,8 +185,37 @@ class PengeluaranController extends Controller
      */
     public function destroy($id)
     {
-        $pengeluaran = Pengeluaran::find($id)->delete();
+        $pengeluaran = Pengeluaran::find($id);
 
-        return response(null, 204);
+        if ($pengeluaran) {
+            $wallets = Wallet::where('id_pengeluaran', $pengeluaran->id_pengeluaran)->get();
+
+            foreach ($wallets as $wallet) {
+                $wallet->delete();
+            }
+
+            $pengeluaran->delete();
+
+            $walletsToUpdate = Wallet::where('id_pengeluaran', '>', $id)
+                ->orderBy('id_pengeluaran', 'asc')
+                ->get();
+
+            $previousWallet = Wallet::where('id_pengeluaran', '<', $id)
+                ->orderBy('id_pengeluaran', 'desc')
+                ->get();
+
+            $previousBalance = $previousWallet->first()->saldo;
+
+            foreach ($walletsToUpdate as $wallet) {
+                $wallet->saldo = $previousBalance + $wallet->credit - $wallet->debit;
+                $wallet->update();
+
+                $previousBalance = $wallet->saldo;
+            }
+
+            return response()->json('Data berhasil dihapus', 200);
+        } else {
+            return response()->json('Data tidak ditemukan', 404);
+        }
     }
 }
