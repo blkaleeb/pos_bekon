@@ -14,6 +14,11 @@ use function PHPUnit\Framework\isNull;
 
 class PenjualanController extends Controller
 {
+    public function __construct()
+    {
+        $this->data['jenis_pembayaran'] = Penjualan::jenis_pembayaran();
+    }
+
     public function index()
     {
         return view('penjualan.index');
@@ -32,8 +37,8 @@ class PenjualanController extends Controller
             ->addColumn('total_harga', function ($penjualan) {
                 return 'Rp. '. format_uang($penjualan->total_harga);
             })
-            ->addColumn('bayar', function ($penjualan) {
-                return 'Rp. '. format_uang($penjualan->bayar);
+            ->addColumn('diterima', function ($penjualan) {
+                return 'Rp. '. format_uang($penjualan->diterima);
             })
             ->addColumn('tanggal', function ($penjualan) {
                 return tanggal_indonesia($penjualan->created_at, false);
@@ -44,6 +49,9 @@ class PenjualanController extends Controller
             })
             ->editColumn('diskon', function ($penjualan) {
                 return $penjualan->diskon . '%';
+            })
+            ->editColumn('jenis_pembayaran', function ($penjualan) {
+                return display_payment_method($penjualan->jenis_pembayaran);
             })
             ->editColumn('kasir', function ($penjualan) {
                 return $penjualan->user->name ?? '';

@@ -1,5 +1,13 @@
 <?php
 
+use App\Models\Penjualan;
+
+function display_payment_method($method)
+{
+    $methods = Penjualan::jenis_pembayaran();
+    return isset($methods[$method]) ? $methods[$method] : '';
+}
+
 function format_uang ($angka) {
     return number_format($angka, 0, ',', '.');
 }

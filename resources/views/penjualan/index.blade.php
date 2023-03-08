@@ -19,10 +19,11 @@
                         <th width="5%">No</th>
                         <th>Tanggal</th>
                         <th>Kode Member</th>
-                        <th>Total Item</th>
+                        <th>Total KG</th>
                         <th>Total Harga</th>
-                        <th>Diskon</th>
-                        <th>Total Bayar</th>
+                        <th width='5%'>Diskon</th>
+                        <th>Dibayar</th>
+                        <th>Jenis Pembayaran</th>
                         <th>Kasir</th>
                         <th width="15%"><i class="fa fa-cog"></i></th>
                     </thead>
@@ -55,7 +56,8 @@
                 {data: 'total_item'},
                 {data: 'total_harga'},
                 {data: 'diskon'},
-                {data: 'bayar'},
+                {data: 'diterima'},
+                {data: 'jenis_pembayaran'},
                 {data: 'kasir'},
                 {data: 'aksi', searchable: false, sortable: false},
             ]
