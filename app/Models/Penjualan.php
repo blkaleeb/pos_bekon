@@ -13,6 +13,13 @@ class Penjualan extends Model
     protected $primaryKey = 'id_penjualan';
     protected $guarded = [];
 
+    public static function jenis_pembayaran(){
+        return [
+            1 => 'Transfer',
+            2 => 'Cash'
+        ];
+    }
+
     public function member()
     {
         return $this->hasOne(Member::class, 'id_member', 'id_member');

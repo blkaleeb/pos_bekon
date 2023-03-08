@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnToDetailPenjualanTable extends Migration
+class AddJenisPembayaranColumnToPenjualanTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnToDetailPenjualanTable extends Migration
      */
     public function up()
     {
-        Schema::table('detail_penjualan', function (Blueprint $table) {
-            //
+        Schema::table('penjualan', function (Blueprint $table) {
+            $table->tinyInteger('jenis_pembayaran')->default(1)->after('bayar');
         });
     }
 
@@ -25,8 +25,8 @@ class AddColumnToDetailPenjualanTable extends Migration
      */
     public function down()
     {
-        Schema::table('detail_penjualan', function (Blueprint $table) {
-            //
+        Schema::table('penjualan', function (Blueprint $table) {
+            $table->dropColumn('jenis_pembayaran');
         });
     }
 }

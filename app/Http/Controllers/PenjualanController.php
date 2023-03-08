@@ -101,9 +101,8 @@ class PenjualanController extends Controller
         $penjualan->diskon = $request->diskon;
         $penjualan->bayar = $request->bayar;
         $penjualan->diterima = $request->diterima;
+        $penjualan->jenis_pembayaran = $request->jenis_pembayaran;
         $penjualan->update();
-
-        // dd($request);
 
         $detail = PenjualanDetail::where('id_penjualan', $penjualan->id_penjualan)->get();
         foreach ($detail as $item) {

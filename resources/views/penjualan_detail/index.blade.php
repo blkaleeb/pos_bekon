@@ -108,9 +108,20 @@
                                 <div class="col-lg-8">
                                     <input type="number" name="diskon" id="diskon" class="form-control"
                                         value="{{ ! empty($memberSelected->id_member) ? $diskon : 0 }}"
-                                        readonly>
+                                        >
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="jenis_pembayaran" class="col-lg-2 control-label">Pembayaran</label>
+                                <div class="col-lg-8">
+                                    <select name="jenis_pembayaran" class="form-control">
+                                        @foreach ($paymentMethods as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="form-group row">
                                 <label for="bayar" class="col-lg-2 control-label">Bayar</label>
                                 <div class="col-lg-8">
