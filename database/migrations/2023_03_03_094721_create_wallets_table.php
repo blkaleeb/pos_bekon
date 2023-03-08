@@ -15,7 +15,7 @@ class CreateWalletsTable extends Migration
     {
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('id_pengeluaran');
+            $table->unsignedInteger('id_pengeluaran')->nullable();
             $table->foreign('id_pengeluaran')->references('id_pengeluaran')->on('pengeluaran');
             $table->integer('credit');
             $table->integer('debit');

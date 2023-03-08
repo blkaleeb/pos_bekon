@@ -23,7 +23,7 @@ class PengeluaranController extends Controller
 
         $pengeluaran = Pengeluaran::leftJoin('kategori_pengeluarans', 'kategori_pengeluarans.id', 'pengeluaran.id_kategori')
             ->select('pengeluaran.*', 'nama_kategori')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get();
 
         return datatables()
@@ -132,8 +132,47 @@ class PengeluaranController extends Controller
     {
         $pengeluaran = Pengeluaran::find($id);
         $pengeluaran->nominal = $request->nominal;
+        $pengeluaran->deskripsi = $request->deskripsi;
+        $pengeluaran->id_kategori = $request->id_kategori;
+        $pengeluaran->update();
 
-        $wallet = Wallet::find($request->id_wallet);
+        $wallets = Wallet::where('id_pengeluaran', $pengeluaran->id_pengeluaran)->first();
+        $kategoripengeluaran = KategoriPengeluaran::find($request->id_kategori);
+        $jenispengeluaran = $kategoripengeluaran->jenis;
+        if($jenispengeluaran == 'credit') {
+            $wallets->debit = 0;
+            $selisih = $request->nominal - $wallets->credit;
+            $wallets->credit = $request->nominal;
+            if($request->nominal >= $wallets->credit){
+                $wallets->saldo += $selisih;
+            }else {
+                $wallets->saldo -= $selisih;
+            };
+            $wallets->update();
+        } else if ($jenispengeluaran == 'debit') {
+            $wallets->credit = 0;
+            $selisih = $request->nominal - $wallets->debit;
+            $wallets->debit = $request->nominal;
+            if($request->nominal >= $wallets->debit){
+                $wallets->saldo -= $selisih;
+            } else {
+                $wallets->saldo += $selisih;
+            };
+            $wallets->update();
+        }
+
+        $latestPengeluaran = Wallet::latest()->first();
+        $lp = $latestPengeluaran->id_pengeluaran;
+
+        $i = $id+1;
+        while($i <= $lp){
+            $walletBefore = Wallet::where('id_pengeluaran', $i-1)->first();
+            $wallet = Wallet::where('id_pengeluaran', $i)->first();
+
+            $wallet->saldo = $walletBefore->saldo + $wallet->credit - $wallet->debit;
+            $wallet->update();
+            $i++;
+        }
 
         return response()->json('Data berhasil disimpan', 200);
     }
