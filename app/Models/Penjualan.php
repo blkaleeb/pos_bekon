@@ -35,4 +35,8 @@ class Penjualan extends Model
     {
         return $this->hasOne(User::class, 'id', 'id_user');
     }
+    public function sales()
+    {
+        return $this->hasOne(SalesMember::class, 'id', 'id_salesmember');
+    }
 }

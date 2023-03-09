@@ -19,6 +19,7 @@
                         <th width="5%">No</th>
                         <th>Tanggal</th>
                         <th>Kode Member</th>
+                        <th>Sales</th>
                         <th>Total KG</th>
                         <th>Total Harga</th>
                         <th width='5%'>Diskon</th>
@@ -56,6 +57,7 @@
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'tanggal'},
                 {data: 'kode_member'},
+                {data: 'id_salesmember'},
                 {data: 'total_item'},
                 {data: 'total_harga'},
                 {data: 'diskon'},

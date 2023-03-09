@@ -6,6 +6,7 @@ use App\Models\Member;
 use App\Models\Penjualan;
 use App\Models\PenjualanDetail;
 use App\Models\Produk;
+use App\Models\SalesMember;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
@@ -21,6 +22,7 @@ class PenjualanDetailController extends Controller
     {
         $produk = Produk::orderBy('nama_produk')->get();
         $member = Member::orderBy('nama')->get();
+        $salesMembers = SalesMember::orderBy('nama')->get();
         $diskon = Setting::first()->diskon ?? 0;
 
         $paymentMethods = Penjualan::jenis_pembayaran();
@@ -30,7 +32,7 @@ class PenjualanDetailController extends Controller
             $penjualan = Penjualan::find($id_penjualan);
             $memberSelected = $penjualan->member ?? new Member();
 
-            return view('penjualan_detail.index', compact('produk', 'member', 'diskon', 'id_penjualan', 'penjualan', 'memberSelected', 'paymentMethods'));
+            return view('penjualan_detail.index', compact('produk', 'member', 'diskon', 'id_penjualan', 'penjualan', 'memberSelected', 'paymentMethods','salesMembers'));
         } else {
             if (auth()->user()->level == 1) {
                 return redirect()->route('transaksi.baru');

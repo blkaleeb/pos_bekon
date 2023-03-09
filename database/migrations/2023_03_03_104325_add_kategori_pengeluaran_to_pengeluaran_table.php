@@ -28,8 +28,8 @@ class AddKategoriPengeluaranToPengeluaranTable extends Migration
     public function down()
     {
         Schema::table('pengeluaran', function (Blueprint $table) {
-            $table->dropColumn('kode_produk');
             $table->dropForeign('pengeluaran_id_kategori_foreign');
+            $table->dropColumn('kode_produk');
         });
     }
 }

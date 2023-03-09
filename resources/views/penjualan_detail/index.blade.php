@@ -120,7 +120,16 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <div class="form-group row">
+                                <label for="id_salesmember" class="col-lg-2 control-label">Sales</label>
+                                <div class="col-lg-8">
+                                    <select name="id_salesmember" class="form-control">
+                                        @foreach ($salesMembers as $key => $value)
+                                            <option value="{{ $value->id }}">{{ $value->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label for="bayar" class="col-lg-2 control-label">Bayar</label>
                                 <div class="col-lg-8">
