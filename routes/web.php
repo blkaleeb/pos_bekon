@@ -54,8 +54,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/pengeluaran/data', [PengeluaranController::class, 'data'])->name('pengeluaran.data');
         Route::resource('/pengeluaran', PengeluaranController::class);
-        
-        Route::get('/kategori_pengeluaran/data', [KategoriPengeluaranController::class, 'data'])->name('kategori.data');
+
+        Route::get('/kategori_pengeluaran/data', [KategoriPengeluaranController::class, 'data'])->name('kategori_pengeluaran.data');
         Route::resource('/kategori_pengeluaran', KategoriPengeluaranController::class);
 
         Route::get('/pembelian/data', [PembelianController::class, 'data'])->name('pembelian.data');
@@ -71,6 +71,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/penjualan/data', [PenjualanController::class, 'data'])->name('penjualan.data');
         Route::get('/penjualan', [PenjualanController::class, 'index'])->name('penjualan.index');
         Route::get('/penjualan/{id}', [PenjualanController::class, 'show'])->name('penjualan.show');
+        Route::get('/penjualan/edit/{id}', [PenjualanController::class, 'editform'])->name('penjualan.editform');
+        Route::put('/penjualan/edit/{id}', [PenjualanController::class, 'changeStatus'])->name('penjualan.changeStatus');
         Route::delete('/penjualan/{id}', [PenjualanController::class, 'destroy'])->name('penjualan.destroy');
     });
 
@@ -99,7 +101,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/setting/first', [SettingController::class, 'show'])->name('setting.show');
         Route::post('/setting', [SettingController::class, 'update'])->name('setting.update');
     });
- 
+
     Route::group(['middleware' => 'level:1,2'], function () {
         Route::get('/profil', [UserController::class, 'profil'])->name('user.profil');
         Route::post('/profil', [UserController::class, 'updateProfil'])->name('user.update_profil');

@@ -19,6 +19,12 @@ class Penjualan extends Model
             2 => 'Cash'
         ];
     }
+    public static function statuses(){
+        return [
+            1 => 'Belum lunas',
+            2 => 'Lunas'
+        ];
+    }
 
     public function member()
     {

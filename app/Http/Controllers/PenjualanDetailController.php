@@ -11,6 +11,12 @@ use Illuminate\Http\Request;
 
 class PenjualanDetailController extends Controller
 {
+    public function __construct()
+    {
+        $this->data['jenis_pembayaran'] = Penjualan::jenis_pembayaran();
+        $this->data['statuses'] = Penjualan::statuses();
+    }
+
     public function index()
     {
         $produk = Produk::orderBy('nama_produk')->get();

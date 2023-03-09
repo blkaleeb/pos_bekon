@@ -7,6 +7,7 @@ use App\Models\Penjualan;
 use App\Models\PenjualanDetail;
 use App\Models\Produk;
 use App\Models\Setting;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PDF;
 
@@ -17,11 +18,12 @@ class PenjualanController extends Controller
     public function __construct()
     {
         $this->data['jenis_pembayaran'] = Penjualan::jenis_pembayaran();
+        $this->data['statuses'] = Penjualan::statuses();
     }
 
     public function index()
     {
-        return view('penjualan.index');
+        return view('penjualan.index', $this->data);
     }
 
     public function data()
@@ -53,12 +55,16 @@ class PenjualanController extends Controller
             ->editColumn('jenis_pembayaran', function ($penjualan) {
                 return display_payment_method($penjualan->jenis_pembayaran);
             })
+            ->editColumn('statuses', function ($penjualan) {
+                return display_statuses($penjualan->statuses);
+            })
             ->editColumn('kasir', function ($penjualan) {
                 return $penjualan->user->name ?? '';
             })
             ->addColumn('aksi', function ($penjualan) {
                 return '
                 <div class="btn-group">
+                    <button onclick="editForm(`'. route('penjualan.editform', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-eye"></i></button>
                     <button onclick="showDetail(`'. route('penjualan.show', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button>
                     <button onclick="deleteData(`'. route('penjualan.destroy', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
@@ -205,5 +211,21 @@ class PenjualanController extends Controller
         $pdf = PDF::loadView('penjualan.nota_besar', compact('setting', 'penjualan', 'detail'));
         $pdf->setPaper(0,0,609,440, 'potrait');
         return $pdf->stream('Transaksi-'. date('Y-m-d-his') .'.pdf');
+    }
+
+    public function editform($id){
+        $penjualan = Penjualan::with('member')->find($id);
+        $date = Carbon::parse($penjualan->created_at)->format('d F Y');
+        $penjualan->tanggal = $date;
+
+        return response()->json($penjualan);
+    }
+
+    public function changeStatus(Request $request, $id){
+        $penjualan = Penjualan::find($id);
+        $penjualan->statuses = $request->statuses;
+        $penjualan->update();
+
+        return response()->json('Status telah terupdate', 200);
     }
 }

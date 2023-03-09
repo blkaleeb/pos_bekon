@@ -22,8 +22,9 @@
                         <th>Total KG</th>
                         <th>Total Harga</th>
                         <th width='5%'>Diskon</th>
-                        <th>Dibayar</th>
+                        <th>Diterima</th>
                         <th>Jenis Pembayaran</th>
+                        <th>Status</th>
                         <th>Kasir</th>
                         <th width="15%"><i class="fa fa-cog"></i></th>
                     </thead>
@@ -34,7 +35,9 @@
 </div>
 
 @includeIf('penjualan.detail')
+@includeIf('penjualan.form')
 @endsection
+
 
 @push('scripts')
 <script>
@@ -58,9 +61,25 @@
                 {data: 'diskon'},
                 {data: 'diterima'},
                 {data: 'jenis_pembayaran'},
+                {data: 'statuses'},
                 {data: 'kasir'},
                 {data: 'aksi', searchable: false, sortable: false},
             ]
+        });
+
+        $('#modal-form').validator().on('submit', function (e) {
+            if (! e.preventDefault()) {
+                $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
+                    .done((response) => {
+                        $('#modal-form').modal('hide');
+                        alert(response);
+                        table.ajax.reload();
+                    })
+                    .fail((errors) => {
+                        alert('Tidak dapat menyimpan data');
+                        return;
+                    });
+            }
         });
 
         table1 = $('.table-detail').DataTable({
@@ -99,6 +118,33 @@
                     return;
                 });
         }
+    }
+
+    function hapusdata() {
+        document.getElementById("nama").innerHTML = '';
+        document.getElementById("tgl").innerHTML = '';
+        document.getElementById("total").innerHTML = '';
+    }
+
+    function editForm(url) {
+        $('#modal-form').modal('show');
+        $('#modal-form .modal-title').text('Edit Penjualan');
+
+        $('#modal-form form')[0].reset();
+        $('#modal-form form').attr('action', url);
+        $('#modal-form [name=_method]').val('put');
+
+        $.get(url)
+            .done((response) => {
+                document.getElementById("nama").innerHTML = response.member !== null ? response.member.nama : '';
+                document.getElementById("tgl").innerHTML = response.tanggal;
+                document.getElementById("total").innerHTML = response.total_harga;
+                $('#statuses').find('option[value="' + response.statuses + '"]').prop('selected', true);
+            })
+            .fail((errors) => {
+                alert('Tidak dapat menampilkan data');
+                return;
+            });
     }
 </script>
 @endpush

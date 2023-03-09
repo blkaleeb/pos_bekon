@@ -7,6 +7,11 @@ function display_payment_method($method)
     $methods = Penjualan::jenis_pembayaran();
     return isset($methods[$method]) ? $methods[$method] : '';
 }
+function display_statuses($method)
+{
+    $methods = Penjualan::statuses();
+    return isset($methods[$method]) ? $methods[$method] : '';
+}
 
 function format_uang ($angka) {
     return number_format($angka, 0, ',', '.');
