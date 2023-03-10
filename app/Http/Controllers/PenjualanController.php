@@ -221,6 +221,7 @@ class PenjualanController extends Controller
         $penjualan = Penjualan::with('member')->find($id);
         $date = Carbon::parse($penjualan->created_at)->format('d F Y');
         $penjualan->tanggal = $date;
+        $penjualan->total_harga = format_uang($penjualan->total_harga);
 
         return response()->json($penjualan);
     }

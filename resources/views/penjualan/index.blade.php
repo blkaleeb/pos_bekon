@@ -140,7 +140,7 @@
             .done((response) => {
                 document.getElementById("nama").innerHTML = response.member !== null ? response.member.nama : '';
                 document.getElementById("tgl").innerHTML = response.tanggal;
-                document.getElementById("total").innerHTML = response.total_harga;
+                document.getElementById("total").innerHTML = 'Rp ' + response.total_harga;
                 $('#statuses').find('option[value="' + response.statuses + '"]').prop('selected', true);
             })
             .fail((errors) => {

@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-lg-6 justify-end">
+                    <div class="col-lg-6">
                         <div class="">
                             <h3>Nama: </h3>
                             <label id="nama" for="nama">Nama</label>
