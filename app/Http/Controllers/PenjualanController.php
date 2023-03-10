@@ -37,7 +37,8 @@ class PenjualanController extends Controller
                 return format_qty($penjualan->total_item);
             })
             ->addColumn('id_salesmember', function ($penjualan) {
-                return $penjualan->sales->nama;
+                $sales = $penjualan->sales->nama ?? '';
+                return $sales;
             })
             ->addColumn('total_harga', function ($penjualan) {
                 return 'Rp. '. format_uang($penjualan->total_harga);
