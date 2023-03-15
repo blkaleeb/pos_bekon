@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{
+    BarangDatangController,
     DashboardController,
     KategoriController,
     KategoriPengeluaranController,
@@ -16,6 +17,7 @@ use App\Http\Controllers\{
     SupplierController,
     UserController,
 };
+use App\Models\BarangDatang;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -67,6 +69,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/pembelian_detail/loadform/{diskon}/{total}', [PembelianDetailController::class, 'loadForm'])->name('pembelian_detail.load_form');
         Route::resource('/pembelian_detail', PembelianDetailController::class)
             ->except('create', 'show', 'edit');
+
+        Route::resource('/barang_datang', BarangDatangController::class);
 
         Route::get('/penjualan/data', [PenjualanController::class, 'data'])->name('penjualan.data');
         Route::get('/penjualan', [PenjualanController::class, 'index'])->name('penjualan.index');

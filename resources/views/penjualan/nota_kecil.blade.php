@@ -6,8 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Nota Kecil</title>
 
-    <?php
-    $style = '
+    <?php $style = '
     <style>
         * {
             font-family: "consolas", sans-serif;
@@ -31,16 +30,11 @@
             @page {
                 margin: 0;
                 size: 75mm 
-    ';
-    ?>
-    <?php 
-    $style .= 
-        ! empty($_COOKIE['innerHeight'])
-            ? $_COOKIE['innerHeight'] .'mm; }'
-            : '}';
-    ?>
-    <?php
-    $style .= '
+    '; ?>
+    <?php $style .= !empty($_COOKIE["innerHeight"])
+        ? $_COOKIE["innerHeight"] . "mm; }"
+        : "}"; ?>
+    <?php $style .= '
             html, body {
                 width: 70mm;
             }
@@ -49,8 +43,7 @@
             }
         }
     </style>
-    ';
-    ?>
+    '; ?>
 
     {!! $style !!}
 </head>
