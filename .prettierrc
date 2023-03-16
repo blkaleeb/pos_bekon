@@ -1,0 +1,10 @@
+{
+    "printWidth": 180,
+    "tabWidth": 4,
+    "wrapAttributes": "auto",
+    "sortTailwindcssClasses": true,
+    "sortHtmlAttributes": "none",
+    "noPhpSyntaxCheck": false,
+    "singleQuote": true,
+    "proseWrap": "never"
+}

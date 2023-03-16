@@ -31,9 +31,7 @@
                 margin: 0;
                 size: 75mm 
     '; ?>
-    <?php $style .= !empty($_COOKIE["innerHeight"])
-        ? $_COOKIE["innerHeight"] . "mm; }"
-        : "}"; ?>
+    <?php $style .= !empty($_COOKIE["innerHeight"]) ? $_COOKIE["innerHeight"] . "mm; }" : "}"; ?>
     <?php $style .= '
             html, body {
                 width: 70mm;

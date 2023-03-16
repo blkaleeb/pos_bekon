@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BarangDatang;
+use App\Models\Pembelian;
 use App\Models\PembelianDetail;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class BarangDatangController extends Controller
      */
     public function index()
     {
-        return view('barang_datang.index');
+        return view("barang_datang.index");
     }
 
     /**
@@ -36,7 +37,17 @@ class BarangDatangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        foreach ($request->id_pembelian_detail as $key => $item) {
+            $barang_datang = new BarangDatang();
+            $barang_datang->id_pembelian = $request->id_pembelian;
+            $barang_datang->id_pembelian_detail = $item;
+            $barang_datang->qty_real = $request->qty_real[$key];
+            $barang_datang->save();
+        }
+
+        return view("pembelian.index", [
+            "success" => "Berhasil update barang datang!",
+        ]);
     }
 
     /**
@@ -47,12 +58,16 @@ class BarangDatangController extends Controller
      */
     public function show(Request $request)
     {
-        
-        $pembelian_detail = PembelianDetail::with('pembelian','produk')->where('id_pembelian', $request->barang_datang)->get();
+        $pembelian_details = PembelianDetail::with("pembelian", "produk")
+            ->where("id_pembelian", $request->barang_datang)
+            ->get();
 
-        $supplier = $pembelian_detail[0]->pembelian->supplier->nama;
+        $pembelian = Pembelian::with("supplier")
+            ->where("id_pembelian", $request->barang_datang)
+            ->first();
+        $supplier = $pembelian_details[0]->pembelian->supplier;
 
-        return view('barang_datang.form', compact('pembelian_detail', 'supplier'));
+        return view("barang_datang.form", compact("pembelian_details", "supplier", "pembelian"));
     }
 
     /**
