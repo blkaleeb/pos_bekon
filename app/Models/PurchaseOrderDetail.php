@@ -12,4 +12,8 @@ class PurchaseOrderDetail extends Model
     protected $table = 'purchase_order_details';
     protected $guarded = [];
 
+    public function produk()
+    {
+        return $this->hasOne(Produk::class, 'id_produk', 'id_produk');
+    }
 }

@@ -23,6 +23,46 @@ class PurchaseOrderDetailController extends Controller
         return view('purchase_order_detail.index', compact('produk', 'purchase_order_id','purchase_order'));
     }
 
+    public function data($id)
+    {
+        $detail = PurchaseOrderDetail::with('produk')
+            ->where('id_purchase_order', $id)
+            ->get();
+        $data = array();
+        $total = 0;
+        $total_item = 0;
+
+        foreach ($detail as $item) {
+            $row = array();
+            $row['kode_produk'] = '<span class="label label-success">'. $item->produk['kode_produk'] .'</span';
+            $row['nama_produk'] = $item->produk['nama_produk'];
+            $row['jumlah']      = '<input type="number" class="form-control input-sm quantity" data-id="'. $item->id .'" value="'. $item->qty .'">';
+            $row['aksi']        = '<div class="btn-group">
+                                    <button onclick="deleteData(`'. route('pembelian_detail.destroy', $item->id) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                                </div>';
+            $data[] = $row;
+
+            $total += $item->harga_beli * $item->jumlah;
+            $total_item += $item->jumlah;
+        }
+        $data[] = [
+            'kode_produk' => '
+                <div class="total hide">'. $total .'</div>
+                <div class="total_item hide">'. $total_item .'</div>',
+            'nama_produk' => '',
+            'harga_beli'  => '',
+            'jumlah'      => '',
+            'subtotal'    => '',
+            'aksi'        => '',
+        ];
+
+        return datatables()
+            ->of($data)
+            ->addIndexColumn()
+            ->rawColumns(['aksi', 'kode_produk', 'jumlah'])
+            ->make(true);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -41,7 +81,19 @@ class PurchaseOrderDetailController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $produk = Produk::where('id_produk', $request->id_produk)->first();
+
+        if (! $produk) {
+            return response()->json('Data gagal disimpan', 400);
+        }
+
+        $detail = new PurchaseOrderDetail();
+        $detail->id_purchase_order = $request->id_purchase_order;
+        $detail->id_produk = $produk->id_produk;
+        $detail->qty = 1;
+        $detail->save();
+
+        return response()->json('Data berhasil disimpan', 200);
     }
 
     /**
@@ -75,7 +127,9 @@ class PurchaseOrderDetailController extends Controller
      */
     public function update(Request $request, PurchaseOrderDetail $purchaseOrderDetail)
     {
-        //
+        $purchaseOrderDetail->qty = $request->jumlah;
+        $purchaseOrderDetail->update();
+        // dd($purchaseOrderDetail);
     }
 
     /**

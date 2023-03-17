@@ -56,7 +56,7 @@
                             <label for="kode_produk" class="col-lg-2">Kode Produk</label>
                             <div class="col-lg-5">
                                 <div class="input-group">
-                                    <input type="hidden" name="id_pembelian" id="id_pembelian"
+                                    <input type="hidden" name="id_purchase_order" id="id_purchase_order"
                                         value="{{ $purchase_order_id }}">
                                     <input type="hidden" name="id_produk" id="id_produk">
                                     <input type="text" class="form-control" name="kode_produk" id="kode_produk">
@@ -74,9 +74,7 @@
                             <th width="5%">No</th>
                             <th>Kode</th>
                             <th>Nama</th>
-                            <th>Harga</th>
                             <th width="15%">Jumlah</th>
-                            <th>Subtotal</th>
                             <th width="15%"><i class="fa fa-cog"></i></th>
                         </thead>
                     </table>
@@ -93,8 +91,6 @@
                                 <input type="hidden" name="total" id="total">
                                 <input type="hidden" name="total_item" id="total_item">
                                 <input type="hidden" name="bayar" id="bayar">
-
-
                             </form>
                         </div>
                     </div>
@@ -108,7 +104,7 @@
         </div>
     </div>
 
-    @includeIf('pembelian_detail.produk')
+    @includeIf('purchase_order_detail.produk')
 @endsection
 
 @push('scripts')
@@ -124,7 +120,7 @@
                     serverSide: true,
                     autoWidth: false,
                     ajax: {
-                        url: '{{ route('pembelian_detail.data', $purchase_order_id) }}',
+                        url: '{{ route('purchase_order_detail.data', $purchase_order_id) }}',
                     },
                     columns: [{
                             data: 'DT_RowIndex',
@@ -138,13 +134,7 @@
                             data: 'nama_produk'
                         },
                         {
-                            data: 'harga_beli'
-                        },
-                        {
                             data: 'jumlah'
-                        },
-                        {
-                            data: 'subtotal'
                         },
                         {
                             data: 'aksi',
@@ -157,7 +147,7 @@
                     paginate: false
                 })
                 .on('draw.dt', function() {
-                    loadForm($('#diskon').val());
+                    loadForm();
                 });
             table2 = $('.table-produk').DataTable();
 
@@ -165,26 +155,20 @@
                 let id = $(this).data('id');
                 let jumlah = parseFloat($(this).val());
 
-                // if (jumlah < 1) {
-                //     $(this).val(1);
-                //     alert('Jumlah tidak boleh kurang dari 1');
-                //     return;
-                // }
-
                 if (jumlah > 10000) {
                     $(this).val(10000);
                     alert('Jumlah tidak boleh lebih dari 10000');
                     return;
                 }
 
-                $.post(`{{ url('/pembelian_detail') }}/${id}`, {
+                $.post(`{{ url('/purchase_order_detail') }}/${id}`, {
                         '_token': $('[name=csrf-token]').attr('content'),
                         '_method': 'put',
                         'jumlah': jumlah
                     })
                     .done(response => {
                         $(this).on('mouseout', function() {
-                            table.ajax.reload(() => loadForm($('#diskon').val()));
+                            table.ajax.reload(() => loadForm());
                         });
                     })
                     .fail(errors => {
@@ -196,38 +180,21 @@
             $(document).on('input', '.harga_beli', function() {
                 let id = $(this).data('id');
                 let jumlah = "";
-                let harga_beli = $(this).val();
-
-                let hargastr = harga_beli.toString();
-                let newstr = hargastr.replace('.', '');
-                harga_beli = parseInt(newstr);
-
-                console.log("harga beli: " + harga_beli);
-                console.log('jumlah: ' + jumlah);
 
                 $.post(`{{ url('/pembelian_detail') }}/${id}`, {
                         '_token': $('[name=csrf-token]').attr('content'),
                         '_method': 'put',
                         'jumlah': jumlah,
-                        'harga_beli': harga_beli
                     })
                     .done(response => {
                         $(this).on('mouseout', function() {
-                            table.ajax.reload(() => loadForm($('#diskon').val()));
+                            table.ajax.reload(() => loadForm());
                         });
                     })
                     .fail(errors => {
                         alert('Tidak dapat menyimpan data');
                         return;
                     });
-            });
-
-            $(document).on('input', '#diskon', function() {
-                if ($(this).val() == "") {
-                    $(this).val(0).select();
-                }
-
-                loadForm($(this).val());
             });
 
             $('.btn-simpan').on('click', function() {
@@ -251,10 +218,10 @@
         }
 
         function tambahProduk() {
-            $.post('{{ route('pembelian_detail.store') }}', $('.form-produk').serialize())
+            $.post('{{ route('purchase_order_detail.store') }}', $('.form-produk').serialize())
                 .done(response => {
                     $('#kode_produk').focus();
-                    table.ajax.reload(() => loadForm($('#diskon').val()));
+                    table.ajax.reload(() => loadForm());
                 })
                 .fail(errors => {
                     alert('Tidak dapat menyimpan data');
@@ -269,7 +236,7 @@
                         '_method': 'delete'
                     })
                     .done((response) => {
-                        table.ajax.reload(() => loadForm($('#diskon').val()));
+                        table.ajax.reload(() => loadForm());
                     })
                     .fail((errors) => {
                         alert('Tidak dapat menghapus data');
