@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Penjualan;
+use Illuminate\Support\Facades\DB;
 
 function display_payment_method($method)
 {
@@ -83,4 +84,13 @@ function tanggal_indonesia($tgl, $tampil_hari = true)
 function tambah_nol_didepan($value, $threshold = null)
 {
     return sprintf("%0". $threshold . "s", $value);
+}
+
+function generatePoNumber()
+{
+    $currentYear = date('y');
+    $lastPoNumber = DB::table('purchase_orders')->orderBy('id', 'desc')->first();
+    $lastPoNumber = ($lastPoNumber) ? substr($lastPoNumber->po_number, -4) : 0;
+    $nextPoNumber = str_pad($lastPoNumber + 1, 4, '0', STR_PAD_LEFT);
+    return 'PO-' . $currentYear . $nextPoNumber;
 }

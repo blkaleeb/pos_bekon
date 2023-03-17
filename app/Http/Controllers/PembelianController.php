@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BarangDatang;
 use Illuminate\Http\Request;
 use App\Models\Pembelian;
 use App\Models\PembelianDetail;
@@ -45,7 +46,7 @@ class PembelianController extends Controller
             ->addColumn('aksi', function ($pembelian) {
                 return '
                 <div class="btn-group">
-                    <a href="'.route('barang_datang.show', $pembelian->id_pembelian).'" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-pencil"></i></a>
+                    <a href="'.route('barang_datang.show', $pembelian->id_pembelian).'" class="btn btn-xs btn-success btn-flat">Confirm kedatangan</a>
                     <button onclick="showDetail(`'. route('pembelian.show', $pembelian->id_pembelian) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button>
                     <button onclick="deleteData(`'. route('pembelian.destroy', $pembelian->id_pembelian) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
@@ -80,12 +81,12 @@ class PembelianController extends Controller
         $pembelian->bayar = $request->bayar;
         $pembelian->update();
 
-        $detail = PembelianDetail::where('id_pembelian', $pembelian->id_pembelian)->get();
-        foreach ($detail as $item) {
-            $produk = Produk::find($item->id_produk);
-            $produk->stok += $item->jumlah;
-            $produk->update();
-        }
+        // $detail = PembelianDetail::where('id_pembelian', $pembelian->id_pembelian)->get();
+        // foreach ($detail as $item) {
+        //     $produk = Produk::find($item->id_produk);
+        //     $produk->stok += $item->jumlah;
+        //     $produk->update();
+        // }
 
         return redirect()->route('pembelian.index');
     }
@@ -119,6 +120,12 @@ class PembelianController extends Controller
     public function destroy($id)
     {
         $pembelian = Pembelian::find($id);
+
+        $barangDatang = BarangDatang::where('id_pembelian', $id)->get();
+        foreach ($barangDatang as $item) {
+            $item->delete();
+        }
+
         $detail    = PembelianDetail::where('id_pembelian', $pembelian->id_pembelian)->get();
         foreach ($detail as $item) {
             $produk = Produk::find($item->id_produk);

@@ -21,4 +21,8 @@ class PembelianDetail extends Model
     {
         return $this->hasOne(Pembelian::class, 'id_pembelian', 'id_pembelian');
     }
+    // public function barang_datang()
+    // {
+    //     return $this->hasOne(BarangDatang::class, 'id', 'id');
+    // }
 }

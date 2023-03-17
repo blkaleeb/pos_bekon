@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BarangDatang;
 use App\Models\Pembelian;
 use App\Models\PembelianDetail;
 use App\Models\Produk;
 use App\Models\Supplier;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PembelianDetailController extends Controller
@@ -81,6 +83,14 @@ class PembelianDetailController extends Controller
         $detail->jumlah = 1;
         $detail->subtotal = $produk->harga_beli;
         $detail->save();
+
+        $barang_datang = new BarangDatang();
+        $barang_datang->qty_real = 0;
+        $barang_datang->id_pembelian = $request->id_pembelian;
+        $barang_datang->id_pembelian_detail = $detail->id_pembelian_detail;
+        $barang_datang->selisih = 0;
+        $barang_datang->tgl_kedatangan = Carbon::now()->addDays(7);
+        $barang_datang->save();
 
         return response()->json('Data berhasil disimpan', 200);
     }
