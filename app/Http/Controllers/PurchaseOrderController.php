@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PurchaseOrder;
+use App\Models\PurchaseOrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,6 +17,31 @@ class PurchaseOrderController extends Controller
     public function index()
     {
         return view('purchase_order.index');
+    }
+
+    public function data()
+    {
+        $purchase_order = PurchaseOrder::orderBy('id', 'desc')->get();
+
+        return datatables()
+            ->of($purchase_order)
+            ->addIndexColumn()
+            ->addColumn('po_number', function ($purchase_order) {
+                return $purchase_order->po_number;
+            })
+            ->editColumn('created_at', function ($purchase_order) {
+                return tanggal_indonesia($purchase_order->created_at);
+            })
+            ->addColumn('aksi', function ($purchase_order) {
+                return '
+                <div class="btn-group">
+                    <button onclick="showDetail(`'. route('purchase_order.show', $purchase_order->id) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button>
+                    <button onclick="deleteData(`'. route('purchase_order.destroy', $purchase_order->id) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                </div>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 
     /**
@@ -52,9 +78,32 @@ class PurchaseOrderController extends Controller
      * @param  \App\Models\PurchaseOrder  $purchaseOrder
      * @return \Illuminate\Http\Response
      */
-    public function show(PurchaseOrder $purchaseOrder)
+    public function show(Request $request)
     {
-        //
+        $detail = PurchaseOrderDetail::with('produk')->where('id_purchase_order', $request)->get();
+
+        dd($request);
+
+        return datatables()
+            ->of($detail)
+            ->addIndexColumn()
+            ->addColumn('kode_produk', function ($detail) {
+                return '<span class="label label-success">'. $detail->produk->kode_produk .'</span>';
+            })
+            ->addColumn('nama_produk', function ($detail) {
+                return $detail->produk->nama_produk;
+            })
+            ->addColumn('harga_jual', function ($detail) {
+                return 'Rp. '. format_uang($detail->harga_jual);
+            })
+            ->addColumn('jumlah', function ($detail) {
+                return format_qty($detail->jumlah);
+            })
+            ->addColumn('subtotal', function ($detail) {
+                return 'Rp. '. format_uang($detail->subtotal);
+            })
+            ->rawColumns(['kode_produk'])
+            ->make(true);
     }
 
     /**

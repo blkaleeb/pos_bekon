@@ -85,7 +85,7 @@
                             <div class="tampil-terbilang"></div>
                         </div>
                         <div class="col-lg-4">
-                            <form action="{{ route('pembelian.store') }}" class="form-pembelian" method="post">
+                            <form action="{{ route('purchase_order.store') }}" class="form-pembelian" method="post">
                                 @csrf
                                 <input type="hidden" name="purchase_order_id" value="{{ $purchase_order_id }}">
                                 <input type="hidden" name="total" id="total">

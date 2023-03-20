@@ -10,8 +10,8 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-lg-12">
+    <div class="row" style="display:flex ; justify-content: center;">
+        <div class="col-12 col-lg-8">
             <div class="box">
                 <div class="box-header with-border">
                     <a href="{{ route('purchase_order.create') }}" class="btn btn-success btn-xs btn-flat"><i
@@ -22,7 +22,8 @@
                         <thead>
                             <th width="5%">No</th>
                             <th>PO Number</th>
-                            <th width="15%"><i class="fa fa-cog"></i></th>
+                            <th>Tanggal PO</th>
+                            <th><i class="fa fa-cog"></i></th>
                         </thead>
                     </table>
                 </div>
@@ -31,6 +32,7 @@
     </div>
 
     @includeIf('purchase_order.form')
+    @includeIf('purchase_order.detail')
 @endsection
 
 @push('scripts')
@@ -44,7 +46,7 @@
                 serverSide: true,
                 autoWidth: false,
                 ajax: {
-                    url: '{{ route('kategori.data') }}',
+                    url: '{{ route('purchase_order.data') }}',
                 },
                 columns: [{
                         data: 'DT_RowIndex',
@@ -52,7 +54,10 @@
                         sortable: false
                     },
                     {
-                        data: 'nama_kategori'
+                        data: 'po_number'
+                    },
+                    {
+                        data: 'created_at'
                     },
                     {
                         data: 'aksi',
@@ -75,7 +80,32 @@
                         });
                 }
             });
+
+            table1 = $('.table-detail').DataTable({
+                processing: true,
+                bSort: false,
+                dom: 'Brt',
+                columns: [{
+                        data: 'DT_RowIndex',
+                        searchable: false,
+                        sortable: false
+                    },
+                    {
+                        data: 'nama_produk'
+                    },
+                    {
+                        data: 'qty'
+                    },
+                ]
+            })
         });
+
+        function showDetail(url) {
+            $('#modal-detail').modal('show');
+
+            table1.ajax.url(url);
+            table1.ajax.reload();
+        }
 
         function addForm(url) {
             $('#modal-form').modal('show');

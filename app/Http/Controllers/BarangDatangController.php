@@ -65,7 +65,6 @@ class BarangDatangController extends Controller
             ->get();
 
         $barang_datangs = BarangDatang::with('pembelian','pembelian_detail.produk')->where('id_pembelian', $request->barang_datang)->get();
-        // dd($barang_datangs);
 
         $pembelian = Pembelian::with("supplier")
             ->where("id_pembelian", $request->barang_datang)
