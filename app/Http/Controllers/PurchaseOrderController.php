@@ -80,30 +80,19 @@ class PurchaseOrderController extends Controller
      */
     public function show(Request $request)
     {
-        $detail = PurchaseOrderDetail::with('produk')->where('id_purchase_order', $request)->get();
+        // $detail = PurchaseOrderDetail::with('produk')->where('id_purchase_order', $request)->get();
 
-        dd($request);
-
-        return datatables()
-            ->of($detail)
-            ->addIndexColumn()
-            ->addColumn('kode_produk', function ($detail) {
-                return '<span class="label label-success">'. $detail->produk->kode_produk .'</span>';
-            })
-            ->addColumn('nama_produk', function ($detail) {
-                return $detail->produk->nama_produk;
-            })
-            ->addColumn('harga_jual', function ($detail) {
-                return 'Rp. '. format_uang($detail->harga_jual);
-            })
-            ->addColumn('jumlah', function ($detail) {
-                return format_qty($detail->jumlah);
-            })
-            ->addColumn('subtotal', function ($detail) {
-                return 'Rp. '. format_uang($detail->subtotal);
-            })
-            ->rawColumns(['kode_produk'])
-            ->make(true);
+        // return datatables()
+        //     ->of($detail)
+        //     ->addIndexColumn()
+        //     ->addColumn('nama_produk', function ($detail) {
+        //         return $detail->produk->nama_produk;
+        //     })
+        //     ->addColumn('qty', function ($detail) {
+        //         return $detail->qty;
+        //     })
+        //     ->rawColumns(['kode_produk'])
+        //     ->make(true);
     }
 
     /**

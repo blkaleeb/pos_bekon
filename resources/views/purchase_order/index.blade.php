@@ -81,7 +81,7 @@
                 }
             });
 
-            table1 = $('.table-detail').DataTable({
+            table1 = $('.modal-detail').DataTable({
                 processing: true,
                 bSort: false,
                 dom: 'Brt',
