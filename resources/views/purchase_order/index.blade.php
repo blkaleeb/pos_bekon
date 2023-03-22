@@ -11,14 +11,14 @@
 
 @section('content')
     <div class="row" style="display:flex ; justify-content: center;">
-        <div class="col-12 col-lg-8">
+        <div class="col-12 col-lg-8 col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
                     <a href="{{ route('purchase_order.create') }}" class="btn btn-success btn-xs btn-flat"><i
                             class="fa fa-plus-circle"></i> Tambah</a>
                 </div>
                 <div class="box-body table-responsive">
-                    <table class="table table-stiped table-bordered">
+                    <table class="table table-stiped table-bordered table-purchase">
                         <thead>
                             <th width="5%">No</th>
                             <th>PO Number</th>
@@ -37,10 +37,10 @@
 
 @push('scripts')
     <script>
-        let table;
+        let table, table1;
 
         $(function() {
-            table = $('.table').DataTable({
+            table = $('.table-purchase').DataTable({
                 responsive: true,
                 processing: true,
                 serverSide: true,
@@ -81,7 +81,7 @@
                 }
             });
 
-            table1 = $('.modal-detail').DataTable({
+            table1 = $('.table-detail').DataTable({
                 processing: true,
                 bSort: false,
                 dom: 'Brt',

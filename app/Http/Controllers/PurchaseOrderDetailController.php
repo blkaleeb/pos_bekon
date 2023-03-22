@@ -129,7 +129,8 @@ class PurchaseOrderDetailController extends Controller
     {
         $purchaseOrderDetail->qty = $request->jumlah;
         $purchaseOrderDetail->update();
-        // dd($purchaseOrderDetail);
+
+        return response('Success update', 200);
     }
 
     /**

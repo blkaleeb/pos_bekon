@@ -78,21 +78,22 @@ class PurchaseOrderController extends Controller
      * @param  \App\Models\PurchaseOrder  $purchaseOrder
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show(Request $request, $purchase_order)
     {
-        // $detail = PurchaseOrderDetail::with('produk')->where('id_purchase_order', $request)->get();
+        $detail = PurchaseOrderDetail::with('produk')->where('id_purchase_order', $purchase_order)->get();
+        // dd($detail);
 
-        // return datatables()
-        //     ->of($detail)
-        //     ->addIndexColumn()
-        //     ->addColumn('nama_produk', function ($detail) {
-        //         return $detail->produk->nama_produk;
-        //     })
-        //     ->addColumn('qty', function ($detail) {
-        //         return $detail->qty;
-        //     })
-        //     ->rawColumns(['kode_produk'])
-        //     ->make(true);
+        return datatables()
+            ->of($detail)
+            ->addIndexColumn()
+            ->addColumn('nama_produk', function ($detail) {
+                return $detail->produk->nama_produk;
+            })
+            ->addColumn('qty', function ($detail) {
+                return $detail->qty;
+            })
+            ->rawColumns(['kode_produk'])
+            ->make(true);
     }
 
     /**
@@ -126,6 +127,8 @@ class PurchaseOrderController extends Controller
      */
     public function destroy(PurchaseOrder $purchaseOrder)
     {
-        //
+        $purchaseOrder->delete();
+
+        return response('Berhasil menghapus PO', 204);
     }
 }
