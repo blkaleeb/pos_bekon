@@ -78,21 +78,24 @@ class PurchaseOrderController extends Controller
      * @param  \App\Models\PurchaseOrder  $purchaseOrder
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show(Request $request, $id)
     {
-        // $detail = PurchaseOrderDetail::with('produk')->where('id_purchase_order', $request)->get();
+        // dd($request);
+        $detail = PurchaseOrderDetail::with('produk')->where('id_purchase_order', $id)->get();
 
-        // return datatables()
-        //     ->of($detail)
-        //     ->addIndexColumn()
-        //     ->addColumn('nama_produk', function ($detail) {
-        //         return $detail->produk->nama_produk;
-        //     })
-        //     ->addColumn('qty', function ($detail) {
-        //         return $detail->qty;
-        //     })
-        //     ->rawColumns(['kode_produk'])
-        //     ->make(true);
+        // dd($detail);
+
+        return datatables()
+            ->of($detail)
+            ->addIndexColumn()
+            ->addColumn('nama_produk', function ($detail) {
+                return $detail->produk->nama_produk;
+            })
+            ->addColumn('qty', function ($detail) {
+                return $detail->qty;
+            })
+            // ->rawColumns(['kode_produk'])
+            ->make(true);
     }
 
     /**

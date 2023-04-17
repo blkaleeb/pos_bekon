@@ -18,7 +18,7 @@
                             class="fa fa-plus-circle"></i> Tambah</a>
                 </div>
                 <div class="box-body table-responsive">
-                    <table class="table table-stiped table-bordered">
+                    <table class="table table-striped table-bordered table-index">
                         <thead>
                             <th width="5%">No</th>
                             <th>PO Number</th>
@@ -37,10 +37,11 @@
 
 @push('scripts')
     <script>
-        let table;
+        let table1;
+        let table2;
 
         $(function() {
-            table = $('.table').DataTable({
+            table1 = $('.table-index').DataTable({
                 responsive: true,
                 processing: true,
                 serverSide: true,
@@ -81,7 +82,7 @@
                 }
             });
 
-            table1 = $('.modal-detail').DataTable({
+            table2 = $('.table-detail').DataTable({
                 processing: true,
                 bSort: false,
                 dom: 'Brt',
@@ -103,8 +104,8 @@
         function showDetail(url) {
             $('#modal-detail').modal('show');
 
-            table1.ajax.url(url);
-            table1.ajax.reload();
+            table2.ajax.url(url);
+            table2.ajax.reload();
         }
 
         function addForm(url) {

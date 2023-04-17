@@ -78,27 +78,11 @@
                             <th width="15%"><i class="fa fa-cog"></i></th>
                         </thead>
                     </table>
-
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class="tampil-bayar bg-primary"></div>
-                            <div class="tampil-terbilang"></div>
-                        </div>
-                        <div class="col-lg-4">
-                            <form action="{{ route('purchase_order.store') }}" class="form-pembelian" method="post">
-                                @csrf
-                                <input type="hidden" name="purchase_order_id" value="{{ $purchase_order_id }}">
-                                <input type="hidden" name="total" id="total">
-                                <input type="hidden" name="total_item" id="total_item">
-                                <input type="hidden" name="bayar" id="bayar">
-                            </form>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="box-footer">
-                    <button type="submit" class="btn btn-primary btn-sm btn-flat pull-right btn-simpan"><i
-                            class="fa fa-floppy-o"></i> Simpan Transaksi</button>
+                    <a href="{{ route('purchase_order.index') }}" class="btn btn-primary btn-sm btn-flat pull-right btn-simpan"><i
+                            class="fa fa-floppy-o"></i> Selesai</a>
                 </div>
             </div>
         </div>

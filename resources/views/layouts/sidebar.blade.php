@@ -56,6 +56,11 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('purchase_order.index') }}">
+                    <i class="fa fa-files-o"></i> <span>Purchase Order</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('pembelian.index') }}">
                     <i class="fa fa-download"></i> <span>Pembelian</span>
                 </a>
