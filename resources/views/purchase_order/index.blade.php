@@ -11,7 +11,7 @@
 
 @section('content')
     <div class="row" style="display:flex ; justify-content: center;">
-        <div class="col-12 col-lg-8">
+        <div class="col-12 col-lg-8 col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
                     <a href="{{ route('purchase_order.create') }}" class="btn btn-success btn-xs btn-flat"><i

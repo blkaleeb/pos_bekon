@@ -129,6 +129,8 @@ class PurchaseOrderController extends Controller
      */
     public function destroy(PurchaseOrder $purchaseOrder)
     {
-        //
+        $purchaseOrder->delete();
+
+        return response('Berhasil menghapus PO', 204);
     }
 }

@@ -100,7 +100,7 @@
 
             table = $('.table-pembelian').DataTable({
                     responsive: true,
-                    processing: true,
+                    // processing: true,
                     serverSide: true,
                     autoWidth: false,
                     ajax: {
@@ -151,29 +151,8 @@
                         'jumlah': jumlah
                     })
                     .done(response => {
-                        $(this).on('mouseout', function() {
-                            table.ajax.reload(() => loadForm());
-                        });
-                    })
-                    .fail(errors => {
-                        alert('Tidak dapat menyimpan data');
-                        return;
-                    });
-            });
-
-            $(document).on('input', '.harga_beli', function() {
-                let id = $(this).data('id');
-                let jumlah = "";
-
-                $.post(`{{ url('/pembelian_detail') }}/${id}`, {
-                        '_token': $('[name=csrf-token]').attr('content'),
-                        '_method': 'put',
-                        'jumlah': jumlah,
-                    })
-                    .done(response => {
-                        $(this).on('mouseout', function() {
-                            table.ajax.reload(() => loadForm());
-                        });
+                        alert('sukses menyimpan data!');
+                        table.ajax.reload();
                     })
                     .fail(errors => {
                         alert('Tidak dapat menyimpan data');
@@ -205,7 +184,7 @@
             $.post('{{ route('purchase_order_detail.store') }}', $('.form-produk').serialize())
                 .done(response => {
                     $('#kode_produk').focus();
-                    table.ajax.reload(() => loadForm());
+                    table.ajax.reload();
                 })
                 .fail(errors => {
                     alert('Tidak dapat menyimpan data');
@@ -220,31 +199,13 @@
                         '_method': 'delete'
                     })
                     .done((response) => {
-                        table.ajax.reload(() => loadForm());
+                        table.ajax.reload();
                     })
                     .fail((errors) => {
                         alert('Tidak dapat menghapus data');
                         return;
                     });
             }
-        }
-
-        function loadForm(diskon = 0) {
-            $('#total').val($('.total').text());
-            $('#total_item').val($('.total_item').text());
-
-            $.get(`{{ url('/pembelian_detail/loadform') }}/${diskon}/${$('.total').text()}`)
-                .done(response => {
-                    $('#totalrp').val('Rp. ' + response.totalrp);
-                    $('#bayarrp').val('Rp. ' + response.bayarrp);
-                    $('#bayar').val(response.bayar);
-                    $('.tampil-bayar').text('Rp. ' + response.bayarrp);
-                    $('.tampil-terbilang').text(response.terbilang);
-                })
-                .fail(errors => {
-                    alert('Tidak dapat menampilkan data');
-                    return;
-                })
         }
     </script>
 @endpush
