@@ -10,11 +10,10 @@
                 <table class="table table-striped table-bordered table-detail">
                     <thead>
                         <th width="5%">No</th>
-                        <th>Kode</th>
                         <th>Nama</th>
-                        <th>Harga</th>
-                        <th>Jumlah</th>
-                        <th>Subtotal</th>
+                        <th>Jumlah Pesanan</th>
+                        <th>Qty Real</th>
+                        <th>Selisih</th>
                     </thead>
                 </table>
             </div>

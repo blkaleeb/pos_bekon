@@ -28,10 +28,10 @@
                             <th width="5%">No</th>
                             <th>Tanggal</th>
                             <th>Supplier</th>
-                            <th>Total Item</th>
-                            <th>Total Harga</th>
-                            <th>Diskon</th>
-                            <th>Total Bayar</th>
+                            {{-- <th>Total Item</th> --}}
+                            {{-- <th>Diskon</th> --}}
+                            <th>Inv Real (*berdasarkan barang datang)</th>
+                            <th>Invoice Supplier</th>
                             <th width="15%"><i class="fa fa-cog"></i></th>
                         </thead>
                     </table>
@@ -68,17 +68,19 @@
                     {
                         data: 'supplier'
                     },
+                    // {
+                    //     data: 'total_item'
+                    // },
+                    // {
+                    //     data: 'diskon'
+                    // },
                     {
-                        data: 'total_item'
-                    },
-                    {
-                        data: 'total_harga'
-                    },
-                    {
-                        data: 'diskon'
-                    },
-                    {
+                        //Invoice sesuai barang datang
                         data: 'bayar'
+                    },
+                    {
+                        //Invoice sesuai nota supplier
+                        data: 'total_harga'
                     },
                     {
                         data: 'aksi',
@@ -99,19 +101,16 @@
                         sortable: false
                     },
                     {
-                        data: 'kode_produk'
-                    },
-                    {
                         data: 'nama_produk'
-                    },
-                    {
-                        data: 'harga_beli'
                     },
                     {
                         data: 'jumlah'
                     },
                     {
-                        data: 'subtotal'
+                        data: 'qty_real'
+                    },
+                    {
+                        data: 'selisih'
                     },
                 ]
             })

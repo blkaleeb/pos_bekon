@@ -80,9 +80,9 @@
                                             id="qty_real[{{ $item->id_pembelian_detail }}]" value="{{ $item->qty_real }}">
                                     </td>
                                     <td>
-                                        <div class="" id="selisihtext[{{ $item->id_pembelian_detail }}]"></div>
-                                        <input type="hidden" name="selisih"
-                                            id="selisih[{{ $item->id_pembelian_detail }}]">
+                                        {{-- <div class="" id="selisihtext[{{ $item->id_pembelian_detail }}]"></div> --}}
+                                        <input type="text" name="selisih" class="form-control" type="number" disabled
+                                            id="selisih[{{ $item->id_pembelian_detail }}]" value="{{ $item->selisih }}">
                                     </td>
                                 </tr>
                             @endforeach
@@ -115,9 +115,9 @@
                 const qtyRealValue = parseFloat(qtyReal.value.trim());
                 const selisih = (qtyRealValue - orderQty).toFixed(3);
                 const selisihElem = document.querySelector(`#selisih\\[${key}\\]`);
-                const selisihtextElem = document.querySelector(`#selisihtext\\[${key}\\]`);
+                // const selisihtextElem = document.querySelector(`#selisihtext\\[${key}\\]`);
                 selisihElem.value = selisih;
-                selisihtextElem.textContent = selisih;
+                // selisihtextElem.textContent = selisih;
             });
         });
     </script>

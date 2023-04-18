@@ -94,20 +94,16 @@ class BarangDatangController extends Controller
      */
     public function update(Request $request)
     {
+        $totalreal = 0;
         foreach ($request->id_pembelian_detail as $key => $item) {
             $barang_datang = BarangDatang::with('pembelian_detail')->where('id_pembelian_detail', $item)->first();
+            // Ambil value qty real
             $qty_real = $barang_datang->qty_real;
             $barang_datang->qty_real = $request->qty_real[$key];
+            $barang_datang->subtotal_real = $barang_datang->qty_real * $barang_datang->pembelian_detail->harga_beli;
             $barang_datang->update();
 
-            // Update qty & total harga pembelian
-            $detail = PembelianDetail::find($item);
-            $detail->jumlah = $qty_real;
-            $detail->subtotal = $detail->harga_beli * $qty_real;
-            $detail->update();
-
             $idproduk = $barang_datang->pembelian_detail->id_produk;
-
             $produk = Produk::find($idproduk);
             if($request->qty_real[$key] > $qty_real){
                 $jumlah = $request->qty_real[$key] - $qty_real;
@@ -120,10 +116,9 @@ class BarangDatangController extends Controller
             $produk->update();
         }
 
-        $subTotal_pembelian = PembelianDetail::where('id_pembelian', $request->id_pembelian);
-        $new_subTotal = ($subTotal_pembelian)->sum('subtotal');
+        $subtotal_real = BarangDatang::with('pembelian_detail')->where('id_pembelian_detail', $item)->sum('subtotal_real');
         $pembelian = Pembelian::find($request->id_pembelian);
-        $pembelian->total_harga = $new_subTotal;
+        $pembelian->bayar = $subtotal_real;
         $pembelian->update();
 
         $supplier = Supplier::orderBy('nama')->get();

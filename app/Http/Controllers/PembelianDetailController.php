@@ -89,7 +89,7 @@ class PembelianDetailController extends Controller
         $barang_datang->id_pembelian = $request->id_pembelian;
         $barang_datang->id_pembelian_detail = $detail->id_pembelian_detail;
         $barang_datang->selisih = 0;
-        $barang_datang->tgl_kedatangan = Carbon::now()->addDays(7);
+        $barang_datang->tgl_kedatangan = Carbon::now()->addDays(2);
         $barang_datang->save();
 
         return response()->json('Data berhasil disimpan', 200);

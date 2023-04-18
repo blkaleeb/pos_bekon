@@ -93,25 +93,23 @@ class PembelianController extends Controller
 
     public function show($id)
     {
-        $detail = PembelianDetail::with('produk')->where('id_pembelian', $id)->get();
+        $detail = BarangDatang::with('pembelian', 'pembelian_detail', 'pembelian_detail.produk')->where('id_pembelian', $id)->get();
+        // dd($detail);
 
         return datatables()
             ->of($detail)
             ->addIndexColumn()
-            ->addColumn('kode_produk', function ($detail) {
-                return '<span class="label label-success">'. $detail->produk->kode_produk .'</span>';
-            })
             ->addColumn('nama_produk', function ($detail) {
-                return $detail->produk->nama_produk;
-            })
-            ->addColumn('harga_beli', function ($detail) {
-                return 'Rp. '. format_uang($detail->harga_beli);
+                return $detail->pembelian_detail->produk->nama_produk;
             })
             ->addColumn('jumlah', function ($detail) {
-                return format_qty($detail->jumlah);
+                return format_qty($detail->pembelian_detail->jumlah);
             })
-            ->addColumn('subtotal', function ($detail) {
-                return 'Rp. '. format_uang($detail->subtotal);
+            ->addColumn('qty_real', function ($detail) {
+                return format_qty($detail->qty_real);
+            })
+            ->addColumn('selisih', function ($detail) {
+                return $detail->selisih;
             })
             ->rawColumns(['kode_produk'])
             ->make(true);
