@@ -77,12 +77,12 @@
                                     <td width=25%>
                                         <input class="form-control" type="number" step="any"
                                             name="qty_real[{{ $item->id_pembelian_detail }}]"
-                                            id="qty_real[{{ $item->id_pembelian_detail }}]" value="{{ $item->qty_real }}">
+                                            id="qty_real[{{ $item->id_pembelian_detail }}]" value="{{ $item->qty_real }}" >
                                     </td>
                                     <td>
                                         {{-- <div class="" id="selisihtext[{{ $item->id_pembelian_detail }}]"></div> --}}
-                                        <input type="text" name="selisih" class="form-control" type="number" disabled
-                                            id="selisih[{{ $item->id_pembelian_detail }}]" value="{{ $item->selisih }}">
+                                        <input name="selisih[{{ $item->id_pembelian_detail }}]" class="form-control" type="number"
+                                            id="selisih[{{ $item->id_pembelian_detail }}]" value="{{ $item->selisih }}" readonly>
                                     </td>
                                 </tr>
                             @endforeach

@@ -30,8 +30,8 @@
                             <th>Supplier</th>
                             {{-- <th>Total Item</th> --}}
                             {{-- <th>Diskon</th> --}}
-                            <th>Inv Real (*berdasarkan barang datang)</th>
-                            <th>Invoice Supplier</th>
+                            <th>Inv Real *berdasarkan barang datang</th>
+                            <th>Invoice Supplier *yang dibayarkan</th>
                             <th width="15%"><i class="fa fa-cog"></i></th>
                         </thead>
                     </table>

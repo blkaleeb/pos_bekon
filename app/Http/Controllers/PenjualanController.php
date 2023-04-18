@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\Pengeluaran;
 use App\Models\Penjualan;
 use App\Models\PenjualanDetail;
 use App\Models\Produk;
 use App\Models\Setting;
+use App\Models\Wallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PDF;
@@ -122,6 +124,26 @@ class PenjualanController extends Controller
         $penjualan->jenis_pembayaran = $request->jenis_pembayaran;
         $penjualan->id_salesmember = $request->id_salesmember;
         $penjualan->update();
+
+        $walletsaldo = Wallet::latest()->first();
+        $saldo = $walletsaldo->saldo;
+        // Jika Tunai buat transaksi
+        if($request->jenis_pembayaran == 2){
+            $pengeluaran = new Pengeluaran();
+            $pengeluaran->id_kategori = 1;
+            $pengeluaran->deskripsi = 'Penjualan Umum ' . $request->kode_member;
+            $pengeluaran->nominal = $request->bayar;
+            $pengeluaran->save();
+
+            $wallets = new Wallet();
+            $pengeluaranBaru = Pengeluaran::latest()->first();
+
+            $wallets->debit = 0;
+            $wallets->credit = $request->bayar;
+            $wallets->id_pengeluaran = $pengeluaranBaru->id_pengeluaran;
+            $wallets->saldo = $saldo + $wallets->credit - $wallets->debit;
+            $wallets->save();
+        }
 
         $detail = PenjualanDetail::where('id_penjualan', $penjualan->id_penjualan)->get();
         foreach ($detail as $item) {

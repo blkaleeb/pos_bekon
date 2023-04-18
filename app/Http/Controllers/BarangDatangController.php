@@ -101,6 +101,7 @@ class BarangDatangController extends Controller
             $qty_real = $barang_datang->qty_real;
             $barang_datang->qty_real = $request->qty_real[$key];
             $barang_datang->subtotal_real = $barang_datang->qty_real * $barang_datang->pembelian_detail->harga_beli;
+            $barang_datang->selisih = $request->selisih[$key];
             $barang_datang->update();
 
             $idproduk = $barang_datang->pembelian_detail->id_produk;
