@@ -16,7 +16,8 @@ class Penjualan extends Model
     public static function jenis_pembayaran(){
         return [
             1 => 'Transfer',
-            2 => 'Cash'
+            2 => 'Cash',
+            2 => 'EDC'
         ];
     }
     public static function statuses(){

@@ -100,6 +100,12 @@ class BarangDatangController extends Controller
             $barang_datang->qty_real = $request->qty_real[$key];
             $barang_datang->update();
 
+            // Update qty & total harga pembelian
+            $detail = PembelianDetail::find($item);
+            $detail->jumlah = $qty_real;
+            $detail->subtotal = $detail->harga_beli * $qty_real;
+            $detail->update();
+
             $idproduk = $barang_datang->pembelian_detail->id_produk;
 
             $produk = Produk::find($idproduk);
@@ -113,6 +119,12 @@ class BarangDatangController extends Controller
 
             $produk->update();
         }
+
+        $subTotal_pembelian = PembelianDetail::where('id_pembelian', $request->id_pembelian);
+        $new_subTotal = ($subTotal_pembelian)->sum('subtotal');
+        $pembelian = Pembelian::find($request->id_pembelian);
+        $pembelian->total_harga = $new_subTotal;
+        $pembelian->update();
 
         $supplier = Supplier::orderBy('nama')->get();
 
