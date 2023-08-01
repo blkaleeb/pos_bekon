@@ -58,7 +58,7 @@ class PenjualanDetailController extends Controller
             $row["nama_produk"] = $item->produk["nama_produk"];
             $row["harga_jual"] = '<input type="number" class="form-control input-sm harga_jual" data-id="' . $item->id_penjualan_detail . '" value="' . format_uang($item->harga_jual) . '">';
             $row["jumlah"] = '<input type="number" class="form-control input-sm quantity" data-id="' . $item->id_penjualan_detail . '" value="' . $item->jumlah . '">';
-            $row["diskon"] = $item->diskon . "%";
+            $row["diskon"] = format_uang($item->diskon);
             $row["subtotal"] = "Rp. " . format_uang($item->subtotal);
             $row["aksi"] =
                 '<div class="btn-group">
@@ -68,7 +68,7 @@ class PenjualanDetailController extends Controller
                                 </div>';
             $data[] = $row;
 
-            $total += $item->harga_jual * $item->jumlah - (($item->diskon * $item->jumlah) / 100) * $item->harga_jual;
+            $total += $item->harga_jual * $item->jumlah - ($item->diskon);
             $total_item += $item->jumlah;
         }
         $data[] = [
@@ -108,7 +108,7 @@ class PenjualanDetailController extends Controller
         $detail->harga_jual = $produk->harga_jual;
         $detail->jumlah = 1;
         $detail->diskon = $produk->diskon;
-        $detail->subtotal = $produk->harga_jual - ($produk->diskon / 100) * $produk->harga_jual;
+        $detail->subtotal = $produk->harga_jual - $produk->diskon ;
         $detail->save();
 
         return response()->json("Data berhasil disimpan", 200);
@@ -119,11 +119,11 @@ class PenjualanDetailController extends Controller
         $detail = PenjualanDetail::find($id);
         if ($request->jumlah) {
             $detail->jumlah = $request->jumlah;
-            $detail->subtotal = $detail->harga_jual * $detail->jumlah - (($detail->diskon * $detail->jumlah) / 100) * $detail->harga_jual;
+            $detail->subtotal = $detail->harga_jual * $detail->jumlah - $detail->diskon;
             $detail->update();
         } elseif ($request->harga_jual) {
             $detail->harga_jual = $request->harga_jual;
-            $detail->subtotal = $detail->harga_jual * $detail->jumlah - (($detail->diskon * $detail->jumlah) / 100) * $detail->harga_jual;
+            $detail->subtotal = $detail->harga_jual * $detail->jumlah - $detail->diskon;
             $detail->update();
         }
     }
@@ -138,7 +138,7 @@ class PenjualanDetailController extends Controller
 
     public function loadForm($diskon = 0, $total = 0, $diterima = 0)
     {
-        $bayar = $total - ($diskon / 100) * $total;
+        $bayar = $total - $diskon;
         $kembali = $diterima != 0 ? $diterima - $bayar : 0;
         $data = [
             "totalrp" => format_uang($total),

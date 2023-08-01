@@ -97,6 +97,7 @@ class BarangDatangController extends Controller
         $totalreal = 0;
         foreach ($request->id_pembelian_detail as $key => $item) {
             $barang_datang = BarangDatang::with('pembelian_detail')->where('id_pembelian_detail', $item)->first();
+
             // Ambil value qty real
             $qty_real = $barang_datang->qty_real;
             $barang_datang->qty_real = $request->qty_real[$key];
@@ -117,7 +118,7 @@ class BarangDatangController extends Controller
             $produk->update();
         }
 
-        $subtotal_real = BarangDatang::with('pembelian_detail')->where('id_pembelian_detail', $item)->sum('subtotal_real');
+        $subtotal_real = BarangDatang::with('pembelian_detail')->where('id_pembelian', $request->id_pembelian)->sum('subtotal_real');
         $pembelian = Pembelian::find($request->id_pembelian);
         $pembelian->bayar = $subtotal_real;
         $pembelian->update();
