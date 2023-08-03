@@ -84,6 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
         );
 
         Route::get('/pembelian/data', [PembelianController::class, 'data'])->name('pembelian.data');
+        Route::get('/pembelian/data2', [PembelianController::class, 'data'])->name('pembelian.data2');
         Route::get('/pembelian/{id}/create', [PembelianController::class, 'create'])->name('pembelian.create');
         Route::resource('/pembelian', PembelianController::class)->except('create');
 
@@ -136,6 +137,12 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::group(['middleware' => 'level:1,2'], function () {
+        Route::get('/pengeluaran/data', [PengeluaranController::class, 'data'])->name('pengeluaran.data');
+        Route::resource('/pengeluaran', PengeluaranController::class);
+        Route::resource('/barang_datang', BarangDatangController::class);
+        Route::resource('/pembelian', PembelianController::class)->except('create');
+        Route::get('/pembelian-confirm', [PembelianController::class, 'listConfirm'])->name('pembelian.listConfirm');
+        Route::get('/pembelian/data2', [PembelianController::class, 'data2'])->name('pembelian.data2');
         Route::get('/profil', [UserController::class, 'profil'])->name('user.profil');
         Route::post('/profil', [UserController::class, 'updateProfil'])->name('user.update_profil');
     });

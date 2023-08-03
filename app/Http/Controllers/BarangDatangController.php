@@ -8,6 +8,7 @@ use App\Models\PembelianDetail;
 use App\Models\Produk;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BarangDatangController extends Controller
 {
@@ -125,10 +126,18 @@ class BarangDatangController extends Controller
 
         $supplier = Supplier::orderBy('nama')->get();
 
-        return view("pembelian.index", [
+        if(Auth::user()->level == 1) {
+          return view("pembelian.index", [
+              "success" => "Berhasil update barang datang!",
+              "supplier" => $supplier
+          ]);
+        } else {
+          return view("pembelian.listConfirm.index", [
             "success" => "Berhasil update barang datang!",
             "supplier" => $supplier
-        ]);
+          ]);
+        }
+
     }
 
     /**

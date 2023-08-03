@@ -23,7 +23,7 @@ class PengeluaranController extends Controller
 
         $pengeluaran = Pengeluaran::leftJoin('kategori_pengeluarans', 'kategori_pengeluarans.id', 'pengeluaran.id_kategori')
             ->select('pengeluaran.*', 'nama_kategori')
-            ->orderBy('created_at', 'asc')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return datatables()

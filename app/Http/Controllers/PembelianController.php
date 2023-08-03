@@ -17,6 +17,40 @@ class PembelianController extends Controller
 
         return view('pembelian.index', compact('supplier'));
     }
+    public function listConfirm()
+    {
+        $supplier = Supplier::orderBy('nama')->get();
+
+        return view('pembelian.listConfirm.index', compact('supplier'));
+    }
+
+    public function data2() {
+      $pembelian = Pembelian::orderBy('id_pembelian', 'desc')->get();
+
+      return datatables()
+        ->of($pembelian)
+        ->addIndexColumn()
+        ->addColumn('total_item', function ($pembelian) {
+          return format_qty($pembelian->total_item);
+        })
+        ->addColumn('tanggal', function ($pembelian) {
+          return tanggal_indonesia($pembelian->created_at, false);
+        })
+        ->addColumn('supplier', function ($pembelian) {
+          return $pembelian->supplier->nama;
+        })
+        ->addColumn('aksi', function ($pembelian) {
+          return '
+                  <div class="btn-group">
+                      <a href="' . route('barang_datang.show', $pembelian->id_pembelian) . '" class="btn btn-xs btn-success btn-flat">Confirm kedatangan</a>
+                      <button onclick="showDetail(`' . route('pembelian.show', $pembelian->id_pembelian) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button>
+                      <button onclick="deleteData(`' . route('pembelian.destroy', $pembelian->id_pembelian) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                  </div>
+                  ';
+        })
+        ->rawColumns(['aksi'])
+        ->make(true);
+    }
 
     public function data()
     {
