@@ -82,18 +82,23 @@ class PenjualanController extends Controller
 
     public function create()
     {
-        $penjualan = new Penjualan();
-        $penjualan->id_member = null;
-        $penjualan->total_item = 0;
-        $penjualan->total_harga = 0;
-        $penjualan->diskon = 0;
-        $penjualan->bayar = 0;
-        $penjualan->diterima = 0;
-        $penjualan->id_user = auth()->id();
-        $penjualan->save();
+        if(session()->has('id_penjualan')){
+            return redirect()->route('transaksi.index');
+        } else {
+            $penjualan = new Penjualan();
+            $penjualan->id_member = null;
+            $penjualan->total_item = 0;
+            $penjualan->total_harga = 0;
+            $penjualan->diskon = 0;
+            $penjualan->bayar = 0;
+            $penjualan->diterima = 0;
+            $penjualan->id_user = auth()->id();
+            $penjualan->save();
 
-        session(['id_penjualan' => $penjualan->id_penjualan]);
-        return redirect()->route('transaksi.index');
+            session(['id_penjualan' => $penjualan->id_penjualan]);
+
+            return redirect()->route('transaksi.index');
+        }
     }
 
     public function store(Request $request)
@@ -154,6 +159,8 @@ class PenjualanController extends Controller
             $produk->stok -= $item->jumlah;
             $produk->update();
         }
+
+        session()->forget('id_penjualan');
 
         return redirect()->route('transaksi.selesai');
     }

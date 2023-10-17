@@ -100,7 +100,7 @@
 
             table = $('.table-pembelian').DataTable({
                     responsive: true,
-                    // processing: true,
+                    processing: true,
                     serverSide: true,
                     autoWidth: false,
                     ajax: {
@@ -131,7 +131,7 @@
                     paginate: false
                 })
                 .on('draw.dt', function() {
-                    loadForm();
+                    // loadForm();
                 });
             table2 = $('.table-produk').DataTable();
 

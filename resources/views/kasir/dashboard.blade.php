@@ -24,5 +24,48 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h2 class="text-center">
+                        KETERSEDIAAN BARANG
+                    </h2>
+                </div>
+                <div class="box-body text-center">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <th width="5%">No</th>
+                            <th>Nama produk</th>
+                            <th>Stok</th>
+                        </thead>
+                        <tbody>
+                            @foreach ($products as $key => $product)
+                                <tr>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td class="text-left">{{ $product->nama_produk }}</td>
+                                    <td>{{ $product->stok }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- /.row (main row) -->
 @endsection
+
+@push('scripts')
+    <script>
+        let table;
+        $(function() {
+            table = $('.table').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: false,
+                autoWidth: false,
+            })
+        })
+    </script>
+@endpush

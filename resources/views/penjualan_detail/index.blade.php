@@ -275,7 +275,7 @@
             if ($(this).val() == "") {
                 $(this).val(0).select();
             }
-
+            console.log($('#diterima'));
             loadForm($('#diskon').val(), $(this).val());
         }).focus(function () {
             $(this).select();
