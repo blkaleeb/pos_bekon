@@ -151,7 +151,7 @@
                         'jumlah': jumlah
                     })
                     .done(response => {
-                        alert('sukses menyimpan data!');
+                        // alert('sukses menyimpan data!');
                         table.ajax.reload();
                     })
                     .fail(errors => {

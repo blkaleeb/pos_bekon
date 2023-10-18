@@ -68,11 +68,12 @@ class PenjualanController extends Controller
                 return $penjualan->user->name ?? '';
             })
             ->addColumn('aksi', function ($penjualan) {
+                $disable = (auth()->user()->level == 3) ? "disabled" : "";
                 return '
                 <div class="btn-group">
                     <button onclick="editForm(`'. route('penjualan.editform', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-pencil"></i></button>
                     <button onclick="showDetail(`'. route('penjualan.show', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button>
-                    <button onclick="deleteData(`'. route('penjualan.destroy', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                    <button onclick="deleteData(`'. route('penjualan.destroy', $penjualan->id_penjualan) . '`)" class="btn btn-xs btn-danger btn-flat"'.  $disable  .' ><i class="fa fa-trash"></i></button>
                 </div>
                 ';
             })
