@@ -127,6 +127,7 @@ class PenjualanController extends Controller
         $penjualan->bayar = $request->bayar;
         $penjualan->diterima = $request->diterima;
         $penjualan->jenis_pembayaran = $request->jenis_pembayaran;
+        $penjualan->statuses = $request->jenis_pembayaran == 2 ? 2 : 1;
         $penjualan->id_salesmember = $request->id_salesmember;
         $penjualan->update();
 

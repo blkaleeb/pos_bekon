@@ -213,11 +213,11 @@
             //     return;
             // }
 
-            if (jumlah > 10000) {
-                $(this).val(10000);
-                alert('Jumlah tidak boleh lebih dari 10000');
-                return;
-            }
+            // if (jumlah > 10000) {
+            //     $(this).val(10000);
+            //     alert('Jumlah tidak boleh lebih dari 10000');
+            //     return;
+            // }
 
             $.post(`{{ url('/transaksi') }}/${id}`, {
                     '_token': $('[name=csrf-token]').attr('content'),
@@ -237,14 +237,11 @@
         $(document).on('input', '.harga_jual', function () {
             let id = $(this).data('id');
             let jumlah = "";
-            let harga_jual = $(this).val();
-
+            let harga_jual = ($(this).val()) ? $(this).val() : 0;
             let hargastr = harga_jual.toString();
             let newstr = hargastr.replace('.', '');
             harga_jual = parseInt(newstr);
-
             console.log(harga_jual);
-            console.log('jumlah: ' + jumlah);
 
             $.post(`{{ url('/transaksi') }}/${id}`, {
                     '_token': $('[name=csrf-token]').attr('content'),

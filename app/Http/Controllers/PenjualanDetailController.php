@@ -62,7 +62,7 @@ class PenjualanDetailController extends Controller
             $row["harga_jual"] = '<input type="number" class="form-control input-sm harga_jual" data-id="' . $item->id_penjualan_detail . '" value="' . format_uang($item->harga_jual) . '">';
             $row["jumlah"] = '<input type="number" class="form-control input-sm quantity" data-id="' . $item->id_penjualan_detail . '" value="' . $item->jumlah . '">';
             $row["diskon"] = format_uang($item->diskon);
-            $row["subtotal"] = "Rp. " . format_uang($item->subtotal);
+            $row["subtotal"] = '<span id="subtotal"> Rp. ' . format_uang($item->subtotal) . "</span>";
             $row["aksi"] =
                 '<div class="btn-group">
                                     <button onclick="deleteData(`' .
@@ -94,7 +94,7 @@ class PenjualanDetailController extends Controller
         return datatables()
             ->of($data)
             ->addIndexColumn()
-            ->rawColumns(["aksi", "kode_produk", "harga_jual", "jumlah"])
+            ->rawColumns(["aksi", "kode_produk", "harga_jual", "jumlah", "subtotal"])
             ->make(true);
     }
 
