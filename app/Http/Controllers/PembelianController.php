@@ -143,7 +143,7 @@ class PembelianController extends Controller
                 return format_qty($detail->qty_real);
             })
             ->addColumn('selisih', function ($detail) {
-                return $detail->selisih;
+                return format_qty($detail->selisih);
             })
             ->rawColumns(['kode_produk'])
             ->make(true);

@@ -17,6 +17,7 @@ function display_statuses($method)
 function format_uang ($angka) {
     return number_format($angka, 0, ',', '.');
 }
+
 function format_qty ($angka) {
     if(is_numeric($angka)) {
         if (floor($angka) != $angka) {

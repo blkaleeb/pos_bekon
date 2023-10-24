@@ -56,7 +56,7 @@ class PenjualanController extends Controller
                 return '<span class="label label-success">'. $member .'</spa>';
             })
             ->editColumn('diskon', function ($penjualan) {
-                return 'Rp. ' . format_uang($penjualan->diskon);
+                return $penjualan->diskon == 0 ? '-' : 'Rp. ' . format_uang($penjualan->diskon);
             })
             ->editColumn('jenis_pembayaran', function ($penjualan) {
                 return display_payment_method($penjualan->jenis_pembayaran);

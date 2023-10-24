@@ -8,35 +8,33 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-lg-6">
-                        <div class="">
+                    <div class="col-lg-12">
+                        <div class="form-group">
                             <h3>Nama: </h3>
                             <label id="nama" for="nama">Nama</label>
                         </div>
-                        <div class="">
+                        <div class="form-group">
                             <h3>Tanggal: </h3>
                             <label id="tgl" for="tgl">Tgl Pembelian</label>
                         </div>
-                        <div class="">
+                        <div class="form-group">
                             <h3>Total: </h3>
                             <label id="total" for="total">Total Pembelian</label>
                         </div>
-                    </div>
-                    <div class="col-lg-6">
                         <form action="" method="post">
                             @csrf
                             @method('post')
                             <div class="form-group">
-                                <label for="statuses" class="col-lg-2 col-lg-offset-1 control-label">Status</label>
-                                <div class="col-lg-6">
+                                <h3 class="control-label">Status Pembayaran</h3>
+                                <div class="">
                                     <select class="form-control" name="statuses" id="statuses">
                                         @foreach ($statuses as $key => $item)
                                             <option value="{{ $key }}">{{ $item}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <button class="btn btn-sm btn-flat btn-primary"><i class="fa fa-save"></i> Simpan</button>
                             </div>
+                            <button class="btn btn-sm btn-flat btn-primary"><i class="fa fa-save"></i> Simpan</button>
                         </form>
                     </div>
                 </div>

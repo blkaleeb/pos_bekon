@@ -130,7 +130,7 @@
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td class="text-left">{{ $product->nama_produk }}</td>
-                                    <td>{{ $product->stok }}</td>
+                                    <td>{{ $product->nama_produk == 'Bacon' ? intval($product->stok) . ' pack' : $product->stok }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
