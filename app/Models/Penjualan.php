@@ -17,7 +17,8 @@ class Penjualan extends Model
         return [
             1 => 'Transfer',
             2 => 'Cash',
-            3 => 'EDC'
+            3 => 'EDC',
+            4 => 'QRIS'
         ];
     }
     public static function statuses(){
