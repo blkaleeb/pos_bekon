@@ -1,12 +1,8 @@
 {
-    "printWidth": 120,
-    "tabWidth": 4,
-    "wrapAttributes": "auto",
-    "sortTailwindcssClasses": true,
-    "sortHtmlAttributes": "none",
-    "noPhpSyntaxCheck": false,
-    "singleQuote": true,
-    "proseWrap": "preserve",
-    "htmlWhitespaceSensitivity": "ignore",
-    "jsxBracketSameLine": true
+  "printWidth": 120,
+  "tabWidth": 2,
+  "singleQuote": true,
+  "proseWrap": "preserve",
+  "htmlWhitespaceSensitivity": "ignore",
+  "plugins": ["@prettier/plugin-php"]
 }

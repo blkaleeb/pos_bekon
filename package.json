@@ -1,27 +1,28 @@
 {
-    "private": true,
-    "scripts": {
-        "dev": "npm run development",
-        "development": "mix",
-        "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
-        "hot": "mix watch --hot",
-        "prod": "npm run production",
-        "production": "mix --production",
-        "prettier": "prettier --write resources/**/*.blade.php"
-    },
-    "devDependencies": {
-        "@shufo/prettier-plugin-blade": "^1.8.10",
-        "@tailwindcss/forms": "^0.2.1",
-        "@tailwindcss/typography": "^0.3.0",
-        "alpinejs": "^2.7.3",
-        "autoprefixer": "^10.0.2",
-        "axios": "^0.21",
-        "laravel-mix": "^6.0.6",
-        "lodash": "^4.17.19",
-        "postcss": "^8.1.14",
-        "postcss-import": "^12.0.1",
-        "prettier": "^2.8.4",
-        "tailwindcss": "^2.0.1"
-    }
+  "private": true,
+  "scripts": {
+    "dev": "npm run development",
+    "development": "mix",
+    "watch": "mix watch",
+    "watch-poll": "mix watch -- --watch-options-poll=1000",
+    "hot": "mix watch --hot",
+    "prod": "npm run production",
+    "production": "mix --production",
+    "prettier": "prettier --write resources/**/*.blade.php"
+  },
+  "devDependencies": {
+    "@prettier/plugin-php": "^0.21.0",
+    "@shufo/prettier-plugin-blade": "^1.8.10",
+    "@tailwindcss/forms": "^0.2.1",
+    "@tailwindcss/typography": "^0.3.0",
+    "alpinejs": "^2.7.3",
+    "autoprefixer": "^10.0.2",
+    "axios": "^0.21",
+    "laravel-mix": "^6.0.6",
+    "lodash": "^4.17.19",
+    "postcss": "^8.1.14",
+    "postcss-import": "^12.0.1",
+    "prettier": "^3.0.3",
+    "tailwindcss": "^2.0.1"
+  }
 }
