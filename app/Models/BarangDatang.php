@@ -7,19 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class BarangDatang extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'barang_datangs';
-    protected $guarded = [];
+  protected $table = 'barang_datangs';
+  protected $guarded = [];
 
-    public function pembelian()
-    {
-        return $this->hasOne(Pembelian::class,'id_pembelian','id_pembelian');
-    }
-    
-    public function pembelian_detail()
-    {
-        return $this->hasOne(PembelianDetail::class,'id_pembelian_detail','id_pembelian_detail');
-    }
-    
+  public function pembelian()
+  {
+    return $this->hasOne(Pembelian::class, 'id_pembelian', 'id_pembelian');
+  }
+
+  public function pembelian_detail()
+  {
+    return $this->hasOne(PembelianDetail::class, 'id_pembelian_detail', 'id_pembelian_detail');
+  }
 }

@@ -6,33 +6,33 @@ use Illuminate\Support\Facades\Schema;
 
 class BuatProdukTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('produk', function (Blueprint $table) {
-            $table->increments('id_produk');
-            $table->unsignedInteger('id_kategori');
-            $table->string('nama_produk')->unique();
-            $table->string('merk')->nullable();
-            $table->integer('harga_beli');
-            $table->tinyInteger('diskon')->default(0);
-            $table->integer('harga_jual');
-            $table->float('stok', 8, 3);
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('produk', function (Blueprint $table) {
+      $table->increments('id_produk');
+      $table->unsignedInteger('id_kategori');
+      $table->string('nama_produk')->unique();
+      $table->string('merk')->nullable();
+      $table->integer('harga_beli');
+      $table->tinyInteger('diskon')->default(0);
+      $table->integer('harga_jual');
+      $table->float('stok', 8, 3);
+      $table->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('produk');
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::dropIfExists('produk');
+  }
 }

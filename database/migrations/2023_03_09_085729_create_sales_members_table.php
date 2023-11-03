@@ -6,29 +6,29 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSalesMembersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('sales_members', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->text('alamat')->nullable();
-            $table->string('telepon')->nullable();
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('sales_members', function (Blueprint $table) {
+      $table->id();
+      $table->string('nama');
+      $table->text('alamat')->nullable();
+      $table->string('telepon')->nullable();
+      $table->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('sales_members');
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::dropIfExists('sales_members');
+  }
 }

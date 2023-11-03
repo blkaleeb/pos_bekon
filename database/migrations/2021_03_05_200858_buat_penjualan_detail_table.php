@@ -6,32 +6,32 @@ use Illuminate\Support\Facades\Schema;
 
 class BuatPenjualanDetailTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('penjualan_detail', function (Blueprint $table) {
-            $table->increments('id_penjualan_detail');
-            $table->integer('id_penjualan');
-            $table->integer('id_produk');
-            $table->integer('harga_jual');
-            $table->float('jumlah',8,3);
-            $table->tinyInteger('diskon')->default(0);
-            $table->integer('subtotal');
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('penjualan_detail', function (Blueprint $table) {
+      $table->increments('id_penjualan_detail');
+      $table->integer('id_penjualan');
+      $table->integer('id_produk');
+      $table->integer('harga_jual');
+      $table->float('jumlah', 8, 3);
+      $table->tinyInteger('diskon')->default(0);
+      $table->integer('subtotal');
+      $table->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('penjualan_detail');
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::dropIfExists('penjualan_detail');
+  }
 }

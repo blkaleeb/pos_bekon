@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'member';
-    protected $primaryKey = 'id_member';
-    protected $guarded = [];
+  protected $table = 'member';
+  protected $primaryKey = 'id_member';
+  protected $guarded = [];
 }

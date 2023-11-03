@@ -6,31 +6,34 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateWalletsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('wallets', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedInteger('id_pengeluaran')->nullable();
-            $table->foreign('id_pengeluaran')->references('id_pengeluaran')->on('pengeluaran');
-            $table->integer('credit');
-            $table->integer('debit');
-            $table->integer('saldo');
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('wallets', function (Blueprint $table) {
+      $table->id();
+      $table->unsignedInteger('id_pengeluaran')->nullable();
+      $table
+        ->foreign('id_pengeluaran')
+        ->references('id_pengeluaran')
+        ->on('pengeluaran');
+      $table->integer('credit');
+      $table->integer('debit');
+      $table->integer('saldo');
+      $table->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('wallets');
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::dropIfExists('wallets');
+  }
 }

@@ -6,28 +6,28 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateKategoriPengeluaransTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('kategori_pengeluarans', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_kategori')->unique();
-            $table->string('jenis');
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('kategori_pengeluarans', function (Blueprint $table) {
+      $table->id();
+      $table->string('nama_kategori')->unique();
+      $table->string('jenis');
+      $table->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('kategori_pengeluarans');
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::dropIfExists('kategori_pengeluarans');
+  }
 }

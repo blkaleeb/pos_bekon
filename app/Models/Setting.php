@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'setting';
-    protected $primaryKey = 'id_setting';
-    protected $guarded = [];
+  protected $table = 'setting';
+  protected $primaryKey = 'id_setting';
+  protected $guarded = [];
 }

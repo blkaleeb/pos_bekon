@@ -7,10 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SalesMember extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'sales_members';
-    protected $guarded = [];
-
-
+  protected $table = 'sales_members';
+  protected $guarded = [];
 }

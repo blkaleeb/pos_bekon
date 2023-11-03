@@ -8,7 +8,7 @@
     "hot": "mix watch --hot",
     "prod": "npm run production",
     "production": "mix --production",
-    "prettier": "prettier --write resources/**/*.blade.php"
+    "format-blade": "blade-formatter --write resources/**/*.blade.php"
   },
   "devDependencies": {
     "@prettier/plugin-php": "^0.21.0",

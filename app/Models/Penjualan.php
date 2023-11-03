@@ -7,38 +7,40 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penjualan extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'penjualan';
-    protected $primaryKey = 'id_penjualan';
-    protected $guarded = [];
+  protected $table = 'penjualan';
+  protected $primaryKey = 'id_penjualan';
+  protected $guarded = [];
 
-    public static function jenis_pembayaran(){
-        return [
-            1 => 'Transfer',
-            2 => 'Cash',
-            3 => 'EDC',
-            4 => 'QRIS'
-        ];
-    }
-    public static function statuses(){
-        return [
-            1 => 'Belum lunas',
-            2 => 'Lunas'
-        ];
-    }
+  public static function jenis_pembayaran()
+  {
+    return [
+      1 => 'Transfer',
+      2 => 'Cash',
+      3 => 'EDC',
+      4 => 'QRIS',
+    ];
+  }
+  public static function statuses()
+  {
+    return [
+      1 => 'Belum lunas',
+      2 => 'Lunas',
+    ];
+  }
 
-    public function member()
-    {
-        return $this->hasOne(Member::class, 'id_member', 'id_member');
-    }
+  public function member()
+  {
+    return $this->hasOne(Member::class, 'id_member', 'id_member');
+  }
 
-    public function user()
-    {
-        return $this->hasOne(User::class, 'id', 'id_user');
-    }
-    public function sales()
-    {
-        return $this->hasOne(SalesMember::class, 'id', 'id_salesmember');
-    }
+  public function user()
+  {
+    return $this->hasOne(User::class, 'id', 'id_user');
+  }
+  public function sales()
+  {
+    return $this->hasOne(SalesMember::class, 'id', 'id_salesmember');
+  }
 }

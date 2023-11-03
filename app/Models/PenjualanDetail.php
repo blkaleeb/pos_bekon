@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class PenjualanDetail extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'penjualan_detail';
-    protected $primaryKey = 'id_penjualan_detail';
-    protected $guarded = [];
+  protected $table = 'penjualan_detail';
+  protected $primaryKey = 'id_penjualan_detail';
+  protected $guarded = [];
 
-    public function produk()
-    {
-        return $this->hasOne(Produk::class, 'id_produk', 'id_produk');
-    }
+  public function produk()
+  {
+    return $this->hasOne(Produk::class, 'id_produk', 'id_produk');
+  }
 }

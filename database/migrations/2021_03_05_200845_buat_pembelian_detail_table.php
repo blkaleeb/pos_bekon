@@ -6,31 +6,31 @@ use Illuminate\Support\Facades\Schema;
 
 class BuatPembelianDetailTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('pembelian_detail', function (Blueprint $table) {
-            $table->increments('id_pembelian_detail');
-            $table->integer('id_pembelian');
-            $table->integer('id_produk');
-            $table->integer('harga_beli');
-            $table->float('jumlah',8,3);
-            $table->integer('subtotal');
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('pembelian_detail', function (Blueprint $table) {
+      $table->increments('id_pembelian_detail');
+      $table->integer('id_pembelian');
+      $table->integer('id_produk');
+      $table->integer('harga_beli');
+      $table->float('jumlah', 8, 3);
+      $table->integer('subtotal');
+      $table->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('pembelian_detail');
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::dropIfExists('pembelian_detail');
+  }
 }

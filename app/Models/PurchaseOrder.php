@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PurchaseOrder extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'purchase_orders';
-    protected $guarded = [];
+  protected $table = 'purchase_orders';
+  protected $guarded = [];
 }

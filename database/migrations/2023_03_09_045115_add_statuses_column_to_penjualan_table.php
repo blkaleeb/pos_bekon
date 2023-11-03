@@ -6,27 +6,30 @@ use Illuminate\Support\Facades\Schema;
 
 class AddStatusesColumnToPenjualanTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::table('penjualan', function (Blueprint $table) {
-            $table->tinyInteger('statuses')->default(1)->after('bayar');
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::table('penjualan', function (Blueprint $table) {
+      $table
+        ->tinyInteger('statuses')
+        ->default(1)
+        ->after('bayar');
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::table('penjualan', function (Blueprint $table) {
-            $table->dropColumn('statuses');
-        });
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::table('penjualan', function (Blueprint $table) {
+      $table->dropColumn('statuses');
+    });
+  }
 }

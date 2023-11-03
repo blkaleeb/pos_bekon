@@ -9,213 +9,219 @@ use App\Models\Wallet;
 
 class PengeluaranController extends Controller
 {
-    public function index()
-    {
-        $this->data['kategori'] = KategoriPengeluaran::all();
-        $this->data['wallet'] = Wallet::latest()->first();
+  public function index()
+  {
+    $this->data['kategori'] = KategoriPengeluaran::all();
+    $this->data['wallet'] = Wallet::latest()->first();
 
-        return view('pengeluaran.index', $this->data);
-    }
+    return view('pengeluaran.index', $this->data);
+  }
 
-    public function data()
-    {
-        // $pengeluaran = Pengeluaran::orderBy('id_pengeluaran', 'desc')->get();
+  public function data()
+  {
+    // $pengeluaran = Pengeluaran::orderBy('id_pengeluaran', 'desc')->get();
 
-        $pengeluaran = Pengeluaran::leftJoin('kategori_pengeluarans', 'kategori_pengeluarans.id', 'pengeluaran.id_kategori')
-            ->select('pengeluaran.*', 'nama_kategori')
-            ->orderBy('created_at', 'desc')
-            ->get();
+    $pengeluaran = Pengeluaran::leftJoin('kategori_pengeluarans', 'kategori_pengeluarans.id', 'pengeluaran.id_kategori')
+      ->select('pengeluaran.*', 'nama_kategori')
+      ->orderBy('created_at', 'desc')
+      ->get();
 
-        return datatables()
-            ->of($pengeluaran)
-            ->addIndexColumn()
-            ->addColumn('created_at', function ($pengeluaran) {
-                return tanggal_indonesia($pengeluaran->created_at, false);
-            })
-            ->addColumn('nominal', function ($pengeluaran) {
-                return format_uang($pengeluaran->nominal);
-            })
-            ->addColumn('aksi', function ($pengeluaran) {
-                return '
+    return datatables()
+      ->of($pengeluaran)
+      ->addIndexColumn()
+      ->addColumn('created_at', function ($pengeluaran) {
+        return tanggal_indonesia($pengeluaran->created_at, false);
+      })
+      ->addColumn('nominal', function ($pengeluaran) {
+        return format_uang($pengeluaran->nominal);
+      })
+      ->addColumn('aksi', function ($pengeluaran) {
+        return '
                 <div class="btn-group">
-                    <button type="button" onclick="editForm(`'. route('pengeluaran.update', $pengeluaran->id_pengeluaran) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                    <button type="button" onclick="deleteData(`'. route('pengeluaran.destroy', $pengeluaran->id_pengeluaran) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                    <button type="button" onclick="editForm(`' .
+          route('pengeluaran.update', $pengeluaran->id_pengeluaran) .
+          '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button type="button" onclick="deleteData(`' .
+          route('pengeluaran.destroy', $pengeluaran->id_pengeluaran) .
+          '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
                 ';
-            })
-            ->rawColumns(['aksi'])
-            ->make(true);
+      })
+      ->rawColumns(['aksi'])
+      ->make(true);
+  }
+
+  /**
+   * Show the form for creating a new resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function create()
+  {
+    //
+  }
+
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function store(Request $request)
+  {
+    $pengeluaran = new Pengeluaran();
+    $pengeluaran->id_kategori = $request->id_kategori;
+    $pengeluaran->deskripsi = $request->deskripsi;
+    $pengeluaran->nominal = $request->nominal;
+    $pengeluaran->save();
+
+    $kategoripengeluaran = KategoriPengeluaran::find($request->id_kategori);
+    $jenispengeluaran = $kategoripengeluaran->jenis;
+
+    $wallets = new Wallet();
+    $pengeluaranBaru = Pengeluaran::latest()->first();
+
+    if ($jenispengeluaran == 'credit') {
+      $wallets->debit = 0;
+      $wallets->credit = $request->nominal;
+      $wallets->id_pengeluaran = $pengeluaranBaru->id_pengeluaran;
+      $wallets->saldo = $request->saldo + $wallets->credit - $wallets->debit;
+      $wallets->save();
+    } elseif ($jenispengeluaran == 'debit') {
+      $wallets->credit = 0;
+      $wallets->debit = $request->nominal;
+      $wallets->id_pengeluaran = $pengeluaranBaru->id_pengeluaran;
+      $wallets->saldo = $request->saldo + $wallets->credit - $wallets->debit;
+      $wallets->save();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    // return response()->json(['success' => true,
+    //                     'data' => $wallets->saldo]);
+
+    return redirect()
+      ->route('pengeluaran.index')
+      ->with('wallet', $wallets);
+  }
+
+  /**
+   * Display the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function show($id)
+  {
+    $pengeluaran = Pengeluaran::find($id);
+
+    return response()->json($pengeluaran);
+  }
+
+  /**
+   * Show the form for editing the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function edit($id)
+  {
+    //
+  }
+
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function update(Request $request, $id)
+  {
+    $pengeluaran = Pengeluaran::find($id);
+    $pengeluaran->nominal = $request->nominal;
+    $pengeluaran->deskripsi = $request->deskripsi;
+    $pengeluaran->id_kategori = $request->id_kategori;
+    $pengeluaran->update();
+
+    $wallets = Wallet::where('id_pengeluaran', $pengeluaran->id_pengeluaran)->first();
+    $kategoripengeluaran = KategoriPengeluaran::find($request->id_kategori);
+    $jenispengeluaran = $kategoripengeluaran->jenis;
+    if ($jenispengeluaran == 'credit') {
+      $wallets->debit = 0;
+      $selisih = $request->nominal - $wallets->credit;
+      $wallets->credit = $request->nominal;
+      if ($request->nominal >= $wallets->credit) {
+        $wallets->saldo += $selisih;
+      } else {
+        $wallets->saldo -= $selisih;
+      }
+      $wallets->update();
+    } elseif ($jenispengeluaran == 'debit') {
+      $wallets->credit = 0;
+      $selisih = $request->nominal - $wallets->debit;
+      $wallets->debit = $request->nominal;
+      if ($request->nominal >= $wallets->debit) {
+        $wallets->saldo -= $selisih;
+      } else {
+        $wallets->saldo += $selisih;
+      }
+      $wallets->update();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $pengeluaran = new Pengeluaran();
-        $pengeluaran->id_kategori = $request->id_kategori;
-        $pengeluaran->deskripsi = $request->deskripsi;
-        $pengeluaran->nominal = $request->nominal;
-        $pengeluaran->save();
+    $latestPengeluaran = Wallet::latest()->first();
+    $lp = $latestPengeluaran->id_pengeluaran;
 
-        $kategoripengeluaran = KategoriPengeluaran::find($request->id_kategori);
-        $jenispengeluaran = $kategoripengeluaran->jenis;
+    $i = $id + 1;
+    while ($i <= $lp) {
+      $walletBefore = Wallet::where('id_pengeluaran', $i - 1)->first();
+      $wallet = Wallet::where('id_pengeluaran', $i)->first();
 
-        $wallets = new Wallet();
-        $pengeluaranBaru = Pengeluaran::latest()->first();
-
-        if($jenispengeluaran == 'credit') {
-            $wallets->debit = 0;
-            $wallets->credit = $request->nominal;
-            $wallets->id_pengeluaran = $pengeluaranBaru->id_pengeluaran;
-            $wallets->saldo = $request->saldo + $wallets->credit - $wallets->debit;
-            $wallets->save();
-        } else if ($jenispengeluaran == 'debit') {
-            $wallets->credit = 0;
-            $wallets->debit = $request->nominal;
-            $wallets->id_pengeluaran = $pengeluaranBaru->id_pengeluaran;
-            $wallets->saldo = $request->saldo + $wallets->credit - $wallets->debit;
-            $wallets->save();
-        }
-
-        // return response()->json(['success' => true,
-        //                     'data' => $wallets->saldo]);
-
-        return redirect()->route('pengeluaran.index')->with('wallet',$wallets);
+      $wallet->saldo = $walletBefore->saldo + $wallet->credit - $wallet->debit;
+      $wallet->update();
+      $i++;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $pengeluaran = Pengeluaran::find($id);
+    return response()->json('Data berhasil disimpan', 200);
+  }
 
-        return response()->json($pengeluaran);
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy($id)
+  {
+    $pengeluaran = Pengeluaran::find($id);
+
+    if ($pengeluaran) {
+      $wallets = Wallet::where('id_pengeluaran', $pengeluaran->id_pengeluaran)->get();
+
+      foreach ($wallets as $wallet) {
+        $wallet->delete();
+      }
+
+      $pengeluaran->delete();
+
+      $walletsToUpdate = Wallet::where('id_pengeluaran', '>', $id)
+        ->orderBy('id_pengeluaran', 'asc')
+        ->get();
+
+      $previousWallet = Wallet::where('id_pengeluaran', '<', $id)
+        ->orderBy('id_pengeluaran', 'desc')
+        ->get();
+
+      $previousBalance = $previousWallet->first()->saldo;
+
+      foreach ($walletsToUpdate as $wallet) {
+        $wallet->saldo = $previousBalance + $wallet->credit - $wallet->debit;
+        $wallet->update();
+
+        $previousBalance = $wallet->saldo;
+      }
+
+      return response()->json('Data berhasil dihapus', 200);
+    } else {
+      return response()->json('Data tidak ditemukan', 404);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $pengeluaran = Pengeluaran::find($id);
-        $pengeluaran->nominal = $request->nominal;
-        $pengeluaran->deskripsi = $request->deskripsi;
-        $pengeluaran->id_kategori = $request->id_kategori;
-        $pengeluaran->update();
-
-        $wallets = Wallet::where('id_pengeluaran', $pengeluaran->id_pengeluaran)->first();
-        $kategoripengeluaran = KategoriPengeluaran::find($request->id_kategori);
-        $jenispengeluaran = $kategoripengeluaran->jenis;
-        if($jenispengeluaran == 'credit') {
-            $wallets->debit = 0;
-            $selisih = $request->nominal - $wallets->credit;
-            $wallets->credit = $request->nominal;
-            if($request->nominal >= $wallets->credit){
-                $wallets->saldo += $selisih;
-            }else {
-                $wallets->saldo -= $selisih;
-            };
-            $wallets->update();
-        } else if ($jenispengeluaran == 'debit') {
-            $wallets->credit = 0;
-            $selisih = $request->nominal - $wallets->debit;
-            $wallets->debit = $request->nominal;
-            if($request->nominal >= $wallets->debit){
-                $wallets->saldo -= $selisih;
-            } else {
-                $wallets->saldo += $selisih;
-            };
-            $wallets->update();
-        }
-
-        $latestPengeluaran = Wallet::latest()->first();
-        $lp = $latestPengeluaran->id_pengeluaran;
-
-        $i = $id+1;
-        while($i <= $lp){
-            $walletBefore = Wallet::where('id_pengeluaran', $i-1)->first();
-            $wallet = Wallet::where('id_pengeluaran', $i)->first();
-
-            $wallet->saldo = $walletBefore->saldo + $wallet->credit - $wallet->debit;
-            $wallet->update();
-            $i++;
-        }
-
-        return response()->json('Data berhasil disimpan', 200);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $pengeluaran = Pengeluaran::find($id);
-
-        if ($pengeluaran) {
-            $wallets = Wallet::where('id_pengeluaran', $pengeluaran->id_pengeluaran)->get();
-
-            foreach ($wallets as $wallet) {
-                $wallet->delete();
-            }
-
-            $pengeluaran->delete();
-
-            $walletsToUpdate = Wallet::where('id_pengeluaran', '>', $id)
-                ->orderBy('id_pengeluaran', 'asc')
-                ->get();
-
-            $previousWallet = Wallet::where('id_pengeluaran', '<', $id)
-                ->orderBy('id_pengeluaran', 'desc')
-                ->get();
-
-            $previousBalance = $previousWallet->first()->saldo;
-
-            foreach ($walletsToUpdate as $wallet) {
-                $wallet->saldo = $previousBalance + $wallet->credit - $wallet->debit;
-                $wallet->update();
-
-                $previousBalance = $wallet->saldo;
-            }
-
-            return response()->json('Data berhasil dihapus', 200);
-        } else {
-            return response()->json('Data tidak ditemukan', 404);
-        }
-    }
+  }
 }
