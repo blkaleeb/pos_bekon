@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{
+  ActivitysController,
   BarangDatangController,
   DashboardController,
   KategoriController,
@@ -145,5 +146,7 @@ Route::group(['middleware' => 'auth'], function () {
     //update profile
     Route::get('/profil', [UserController::class, 'profil'])->name('user.profil');
     Route::post('/profil', [UserController::class, 'updateProfil'])->name('user.update_profil');
+
+    Route::resource('/activitys', ActivitysController::class);
   });
 });
