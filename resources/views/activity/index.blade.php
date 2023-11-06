@@ -10,6 +10,11 @@
 @endsection
 
 @section('content')
+  @if (!empty($messages))
+    <div class="callout callout-success">
+      <h4>{{ $messages }}</h4>
+    </div>
+  @endif
   <div class="row">
     <div class="col-lg-4">
       <a href="{{ route('activitys.create') }}">

@@ -25,7 +25,7 @@ class ActivitysController extends Controller
    */
   public function create()
   {
-    $produks = Produk::get();
+    $produks = Produk::orderBy('nama_produk', 'asc')->get();
     return view('activity.form', compact('produks'));
   }
 
@@ -37,8 +37,7 @@ class ActivitysController extends Controller
    */
   public function store(Request $request)
   {
-    // dd($request);
-    $validatedData = $request->validate([
+    $request->validate([
       'barang_dipotong' => 'required|gt:0',
       'barang_menjadi' => 'required|gt:0',
       'berat_daging' => 'required',
@@ -50,7 +49,29 @@ class ActivitysController extends Controller
     $activity->barang_menjadi = $request->barang_menjadi;
     $activity->berat_daging = $request->berat_daging;
     $activity->hasil_daging = $request->hasil_daging;
+
+    // buat variabel untuk masing-masing produk
+    $selisih = $request->berat_daging - $request->hasil_daging;
+    $barang_sisa = Produk::where('nama_produk', '=', 'Trimming')->first();
+    $produk = Produk::where('id_produk', $request->barang_dipotong)->first();
+    $produkJadi = Produk::where('id_produk', $request->barang_menjadi)->first();
+
+    //check apakah barang yang dipotong sama dengan barang yang dihasilkan
+    if ($request->barang_dipotong == $request->barang_menjadi) {
+      $produk->stok -= $selisih;
+    } else {
+      $produk->stok -= $request->berat_daging;
+      $produkJadi->stok += $request->hasil_daging;
+    }
+
+    $barang_sisa->stok += $selisih;
+    $barang_sisa->update();
+    $produk->update();
+    $produkJadi->update();
+
     $activity->save();
+
+    return view('activity.index')->with('messages', 'Sukses menambahkan aktifitas!');
   }
 
   /**
