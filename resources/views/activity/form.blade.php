@@ -22,13 +22,11 @@
             <div class="form-group @error('barang_dipotong') has-error @enderror">
               <label for="barang_dipotong">Daging</label>
               <select class="form-control" name="barang_dipotong" id="barang_dipotong">
-                @if (old('barang_dipotong'))
-                  <option value={{ old('barang_dipotong') }} selected>{{ old('barang_dipotong') }}</option>
-                @else
-                  <option value="0" selected disabled>-- Pilih Daging yang ingin di Slice --</option>
-                @endif
+                <option value="0" selected disabled>-- Pilih Daging yang ingin di Slice --</option>
                 @foreach ($produks as $key => $item)
-                  <option value="{{ $item->id_produk }}">{{ $item->nama_produk }}</option>
+                  <option value="{{ $item->id_produk }}"
+                    {{ old('barang_dipotong') == $item->id_produk ? 'selected' : '' }}>
+                    {{ $item->nama_produk }}</option>
                 @endforeach
               </select>
               @error('barang_dipotong')

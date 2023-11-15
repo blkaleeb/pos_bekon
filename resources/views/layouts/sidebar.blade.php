@@ -31,7 +31,7 @@
         </li>
         <li>
           <a href="{{ route('kategori_pengeluaran.index') }}">
-            <i class="fa fa-cube"></i> <span>Kategori Pengeluaran</span>
+            <i class="fa fa-credit-card"></i> <span>Kategori Pengeluaran</span>
           </a>
         </li>
         <li>
@@ -78,6 +78,11 @@
         <li>
           <a href="{{ route('transaksi.baru') }}">
             <i class="fa fa-cart-arrow-down"></i> <span>Tambah transaksi</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ route('activitys.index') }}">
+            <i class="fa fa-gavel"></i> <span>Aktifitas</span>
           </a>
         </li>
         <li class="header">REPORT</li>
@@ -148,6 +153,11 @@
         <li>
           <a href="{{ route('transaksi.baru') }}">
             <i class="fa fa-cart-arrow-down"></i> <span>Tambah Transaksi</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ route('activitys.index') }}">
+            <i class="fa fa-gavel"></i> <span>Aktifitas</span>
           </a>
         </li>
       @endif
