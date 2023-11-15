@@ -176,4 +176,30 @@ class PenjualanDetailController extends Controller
 
     return response()->json($data);
   }
+
+  public function editPenjualan($id)
+  {
+    $produk = Produk::orderBy('nama_produk')->get();
+    $member = Member::orderBy('nama')->get();
+    $salesMembers = SalesMember::orderBy('nama')->get();
+    $diskon = Setting::first()->diskon ?? 0;
+    $paymentMethods = Penjualan::jenis_pembayaran();
+    $id_penjualan = $id;
+    $penjualan = Penjualan::find($id);
+    $memberSelected = $penjualan->member ?? new Member();
+
+    return view(
+      'penjualan_detail.index',
+      compact(
+        'produk',
+        'member',
+        'diskon',
+        'id_penjualan',
+        'penjualan',
+        'memberSelected',
+        'paymentMethods',
+        'salesMembers'
+      )
+    );
+  }
 }

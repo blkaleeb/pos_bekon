@@ -177,6 +177,82 @@ class PenjualanController extends Controller
     return redirect()->route('transaksi.selesai');
   }
 
+  public function edit(Request $request)
+  {
+    $newmember = null;
+    if ($request->id_member == null && $request->kode_member != null) {
+      $member = Member::latest()->first() ?? new Member();
+      $kode_member = (int) $member->kode_member + 1;
+
+      $member = new Member();
+      $member->kode_member = tambah_nol_didepan($kode_member, 5);
+      $member->nama = $request->kode_member;
+      $member->telepon = '';
+      $member->alamat = '';
+      $member->save();
+      $newmember = $member->id_member;
+    }
+
+    $memberid = !$request->id_member ? $newmember : $request->id_member;
+
+    $penjualan = Penjualan::findOrFail($request->id_penjualan);
+    $penjualan->id_member = $memberid;
+    $penjualan->total_item = $request->total_item;
+    $penjualan->total_harga = $request->total;
+    $penjualan->diskon = $request->diskon;
+    $penjualan->bayar = $request->bayar;
+    $penjualan->diterima = $request->diterima;
+    // $penjualan->jenis_pembayaran = $request->jenis_pembayaran;
+    $penjualan->statuses = $request->jenis_pembayaran == 2 ? 2 : 1;
+    $penjualan->id_salesmember = $request->id_salesmember;
+    $penjualan->update();
+
+    $walletsaldo = Wallet::latest()->first();
+    $saldo = $walletsaldo->saldo;
+
+    // Jika Tunai buat transaksi
+    if ($request->jenis_pembayaran == 2 && $request->jenis_pembayaran != 2) {
+      $pengeluaran = new Pengeluaran();
+      $pengeluaran->id_kategori = 1;
+      $pengeluaran->deskripsi = 'Penjualan Umum ' . $request->kode_member;
+      $pengeluaran->nominal = $request->bayar;
+      $pengeluaran->save();
+
+      $wallets = new Wallet();
+      $pengeluaranBaru = Pengeluaran::latest()->first();
+
+      $wallets->debit = 0;
+      $wallets->credit = $request->bayar;
+      $wallets->id_pengeluaran = $pengeluaranBaru->id_pengeluaran;
+      $wallets->saldo = $saldo + $wallets->credit - $wallets->debit;
+      $wallets->save();
+    }
+
+    // Jika sebelumnya Tunai update saldo saja
+    if ($penjualan->jenis_pembayaran == 2 && $request->jenis_pembayaran) {
+      $penjualan->jenis_pembayaran = $request->jenis_pembayaran;
+    }
+
+    $detail = PenjualanDetail::where('id_penjualan', $penjualan->id_penjualan)->get();
+    foreach ($detail as $item) {
+      $item->diskon = $request->diskon;
+      $item->update();
+
+      $produk = Produk::find($item->id_produk);
+      if($request->qty_real[...] < $item->jumlah){
+      $produk->stok -= $item->jumlah;
+      $produk->update()
+      } else if ($request->qty_real[...] > $item->jumlah) {
+        $produk->stok += $item->jumlah;
+      $produk->update()
+      }
+    }
+
+    session()->forget('id_penjualan');
+
+    return redirect()->route('transaksi.selesai');
+  }
+
   public function show($id)
   {
     $detail = PenjualanDetail::with('produk')

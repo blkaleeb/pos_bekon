@@ -65,6 +65,9 @@ Route::group(['middleware' => 'auth'], function () {
       'kategori_pengeluaran.data'
     );
     Route::resource('/kategori_pengeluaran', KategoriPengeluaranController::class);
+
+    //Penjualan Super Admin
+    Route::get('/penjualan-edit/{id}', [PenjualanDetailController::class, 'editPenjualan'])->name('edit.penjualan');
   });
 
   Route::group(['middleware' => 'level:1,2'], function () {
