@@ -186,10 +186,11 @@ class PenjualanDetailController extends Controller
     $paymentMethods = Penjualan::jenis_pembayaran();
     $id_penjualan = $id;
     $penjualan = Penjualan::find($id);
+    $penjualan_payment = $penjualan->jenis_pembayaran;
     $memberSelected = $penjualan->member ?? new Member();
 
     return view(
-      'penjualan_detail.index',
+      'penjualan_detail.edit',
       compact(
         'produk',
         'member',
@@ -198,6 +199,7 @@ class PenjualanDetailController extends Controller
         'penjualan',
         'memberSelected',
         'paymentMethods',
+        'penjualan_payment',
         'salesMembers'
       )
     );

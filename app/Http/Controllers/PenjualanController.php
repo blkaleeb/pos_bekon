@@ -70,12 +70,15 @@ class PenjualanController extends Controller
         return $penjualan->user->name ?? '';
       })
       ->addColumn('aksi', function ($penjualan) {
-        $disable = auth()->user()->level == 3 ? 'disabled' : '';
+        $disable = auth()->user()->level != 1 ? 'disabled' : '';
         return '
-                <div class="btn-group">
+                <div class="btn-group" style="display: flex; justify-content:space-around">
                     <button onclick="editForm(`' .
           route('penjualan.editform', $penjualan->id_penjualan) .
           '`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-pencil"></i></button>
+                    <a href="' .
+          route('edit.penjualan', $penjualan->id_penjualan) .
+          '" class="btn btn-xs btn-success btn-flat"><i class="fa fa-warning"></i></a>
                     <button onclick="showDetail(`' .
           route('penjualan.show', $penjualan->id_penjualan) .
           '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button>
@@ -233,20 +236,20 @@ class PenjualanController extends Controller
       $penjualan->jenis_pembayaran = $request->jenis_pembayaran;
     }
 
-    $detail = PenjualanDetail::where('id_penjualan', $penjualan->id_penjualan)->get();
-    foreach ($detail as $item) {
-      $item->diskon = $request->diskon;
-      $item->update();
+    // $detail = PenjualanDetail::where('id_penjualan', $penjualan->id_penjualan)->get();
+    // foreach ($detail as $item) {
+    //   $item->diskon = $request->diskon;
+    //   $item->update();
 
-      $produk = Produk::find($item->id_produk);
-      if($request->qty_real[...] < $item->jumlah){
-      $produk->stok -= $item->jumlah;
-      $produk->update()
-      } else if ($request->qty_real[...] > $item->jumlah) {
-        $produk->stok += $item->jumlah;
-      $produk->update()
-      }
-    }
+    //   $produk = Produk::find($item->id_produk);
+    //   if($request->qty_real[...] < $item->jumlah){
+    //   $produk->stok -= $item->jumlah;
+    //   $produk->update()
+    //   } else if ($request->qty_real[...] > $item->jumlah) {
+    //     $produk->stok += $item->jumlah;
+    //   $produk->update()
+    //   }
+    // }
 
     session()->forget('id_penjualan');
 
